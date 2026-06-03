@@ -23,6 +23,4 @@ COPY src ./src
 
 WORKDIR /app/src
 
-RUN mkdir -p /app/src/staticfiles
-
-CMD ["uv", "run", "gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["sh", "-c", "uv run gunicorn core.wsgi:application --bind 0.0.0.0:8000"]
