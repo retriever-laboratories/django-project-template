@@ -36,6 +36,8 @@ ALLOWED_HOSTS = [h for h in os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0
 # Optional: CSRF Trusted Origins (needed when serving behind a domain with HTTPS)
 # Comma-separated full origins: e.g. "https://myapp.example.com,https://staging.example.com"
 CSRF_TRUSTED_ORIGINS = [o for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o]
+USE_X_FORWARDED_HOST = True if os.getenv("LOCAL_DEVELOPMENT", None) else False
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https") if os.getenv("LOCAL_DEVELOPMENT", None) else None
 
 # ----------------------------
 # Applications

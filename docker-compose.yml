@@ -9,8 +9,8 @@ services:
     env_file:
       - .env
 
-    ports:
-      - "${WEB_PORT:-8000}:8000"
+    expose:
+      - "8000"
 
     volumes:
       - ./src:/app/src
@@ -25,6 +25,26 @@ services:
         uv run python manage.py migrate &&
         uv run python manage.py runserver 0.0.0.0:8000
       "
+  caddy:
+    image: caddy:2
+    container_name: ${COMPOSE_PROJECT_NAME:-django_project}_caddy
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - static_volume:/app/staticfiles:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+        - web
+
 
   postgres:
     image: postgres:17
@@ -65,3 +85,5 @@ services:
 volumes:
   postgres_data:
   static_volume:
+  caddy_data:
+  caddy_config:
