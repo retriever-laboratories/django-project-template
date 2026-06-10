@@ -1,0 +1,19 @@
+<thead>
+  <tr>
+    {% for column in context.table.columns %}
+      <th scope="col">
+        <div class="flex items-center gap-2">
+          <span>{{ column.label }}</span>
+          {% if column.sortable %}
+            <button
+              type="button"
+              class="btn btn-ghost btn-xs btn-square"
+              aria-label="Sort by {{ column.label }}">
+              <span aria-hidden="true">↕</span>
+            </button>
+          {% endif %}
+        </div>
+      </th>
+    {% endfor %}
+  </tr>
+</thead>

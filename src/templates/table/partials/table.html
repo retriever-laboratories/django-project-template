@@ -1,0 +1,13 @@
+<div class="border border-base-300 rounded-box">
+  {% include "table/partials/table_top.html" with context=context only %}
+
+  <div class="overflow-x-auto">
+    <table id="{{ context.table.id }}" class="table">
+      {% include "table/partials/table_header.html" with context=context only %}
+      {% include "table/partials/table_rows.html" with context=context only %}
+    </table>
+  </div>
+
+  {% include "table/partials/pagination.html" with context=context only %}
+  {% include "table/partials/table_bottom.html" with context=context only %}
+</div>
