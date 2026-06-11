@@ -1,0 +1,10 @@
+<details class="dropdown">
+  <summary class="btn btn-sm">Filter</summary>
+  <ul class="menu dropdown-content z-10 w-56 rounded-box bg-base-100 p-2 shadow">
+    {% for filter in filters %}
+      <li>
+        <button type="button">{{ filter.label }}</button>
+      </li>
+    {% endfor %}
+  </ul>
+</details>

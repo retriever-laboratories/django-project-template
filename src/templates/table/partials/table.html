@@ -1,13 +1,16 @@
-<div class="border border-base-300 rounded-box">
-  {% include "table/partials/table_top.html" with context=context only %}
+<div id="table-{{ table.id }}" class="border border-base-300 rounded-box">
+  {% include "table/partials/table_top.html" with table=table top_right_partial=top_right_partial only %}
 
   <div class="overflow-x-auto">
-    <table id="{{ context.table.id }}" class="table">
-      {% include "table/partials/table_header.html" with context=context only %}
-      {% include "table/partials/table_rows.html" with context=context only %}
+    <table id="{{ table.id }}" class="table">
+      {% include "table/partials/table_header.html" with table=table only %}
+      {% include "table/partials/table_rows.html" with table=table only %}
     </table>
   </div>
 
-  {% include "table/partials/pagination.html" with context=context only %}
-  {% include "table/partials/table_bottom.html" with context=context only %}
+  {% if table.pagination %}
+    {% include "table/partials/pagination.html" with pagination=table.pagination only %}
+  {% endif %}
+
+  {% include "table/partials/table_bottom.html" with table=table only %}
 </div>
