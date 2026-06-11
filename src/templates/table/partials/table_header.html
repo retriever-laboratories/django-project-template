@@ -5,9 +5,7 @@
         <div class="flex items-center gap-2">
           <span>{{ column.label }}</span>
           {% if column.sort.enabled %}
-            <button
-              type="button"
-              class="btn btn-ghost btn-xs btn-square">
+            <button type="button">
               {% if column.sort.direction == "asc" %}
                 ↑
               {% elif column.sort.direction == "desc" %}
