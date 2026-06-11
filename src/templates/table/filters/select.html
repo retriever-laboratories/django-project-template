@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-2 p-2">
+  <ul class="flex flex-col gap-1">
+    {% for option in filter.options %}
+      <li>
+        <label class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="{{ filter.accessor }}"
+            value="{{ option.value }}"
+            {% if option.value in filter.values %}checked{% endif %}/>
+          {{ option.label }}
+        </label>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% include "table/filters/actions.html" with can_apply=filter.values only %}
+</div>

@@ -4,8 +4,8 @@ from django.shortcuts import render
 TABLE_SPEC = {
     "id": "users",
     "filters": [
-        {"accessor": "name", "label": "Name", "type": "text", "value": None},
-        {"accessor": "email", "label": "Email", "type": "text", "value": None},
+        {"accessor": "name", "label": "Name", "type": "text", "values": []},
+        {"accessor": "email", "label": "Email", "type": "text", "values": []},
         {
             "accessor": "role",
             "label": "Role",
@@ -15,7 +15,7 @@ TABLE_SPEC = {
                 {"value": "editor", "label": "Editor"},
                 {"value": "viewer", "label": "Viewer"},
             ],
-            "value": None,
+            "values": ["admin", "editor"],
         },
         {
             "accessor": "status",
@@ -26,7 +26,7 @@ TABLE_SPEC = {
                 {"value": "invited", "label": "Invited"},
                 {"value": "disabled", "label": "Disabled"},
             ],
-            "value": None,
+            "values": [],
         },
     ],
     "columns": [
