@@ -26,16 +26,15 @@
         <!-- Global toasts / messages container -->
         <div id="toasts" class="toast toast-end toast-top"></div>
 
-        <!-- Main content -->
-        <main id="content">
-            {% block content %}{% endblock %}
-        </main>
-
-        <!-- Optional: Hyperscript for small interactions (nice with HTMX) -->
-        <!-- <script src="https://unpkg.com/hyperscript.org@0.9.12"></script> -->
-
-        <!-- Optional: Alpine.js for sprinkles -->
-        <!-- <script src="https://unpkg.com/alpinejs@3.x.x" defer></script> -->
+        <div class="drawer">
+            <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
+            <div class="drawer-content">
+                {% include "partials/navbar.html" %}
+                <main id="main-content">{% block content %}{% endblock %}</main>
+            </div>
+            
+            {% include "partials/sidebar_content.html" %}
+        </div>
 
         <!-- Our HTMX init (CSRF header + small helpers) -->
         <script src="{% static 'js/htmx-init.js' %}"></script>

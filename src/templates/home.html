@@ -1,15 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}Dashboard{% endblock %}
 {% block content %}
-  <h1>Home</h1>
-
-  <button
-    id="ping-btn"
-    hx-post="{% url 'base:ping' %}"
-    hx-target="#ping-result"
-    hx-swap="innerHTML">
-    Ping (HTMX POST)
-  </button>
-
-  <div id="ping-result" class="mt-2"></div>
+  <div class="px-6 pt-10 text-3xl font-semibold">Welcome to the Dashboard</div>
 {% endblock %}
