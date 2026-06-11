@@ -1,28 +1,28 @@
 {% if pagination.has_other_pages %}
   <nav class="flex items-center justify-between gap-3 border-t border-base-300 px-4 py-3" aria-label="Table pagination">
-    <p class="text-sm text-base-content/70">
+    <p>
       Page {{ pagination.number }} of {{ pagination.paginator.num_pages }}
     </p>
 
-    <div class="join">
+    <div class="flex items-center gap-2">
       {% if pagination.has_previous %}
-        <a class="join-item btn btn-sm" href="?page={{ pagination.previous_page_number }}">Previous</a>
+        <a href="?page={{ pagination.previous_page_number }}">Previous</a>
       {% else %}
-        <button class="join-item btn btn-sm" disabled>Previous</button>
+        <span>Previous</span>
       {% endif %}
 
       {% for page_number in pagination.paginator.page_range %}
         {% if page_number == pagination.number %}
-          <button class="join-item btn btn-sm btn-active" aria-current="page">{{ page_number }}</button>
+          <strong aria-current="page">{{ page_number }}</strong>
         {% else %}
-          <a class="join-item btn btn-sm" href="?page={{ page_number }}">{{ page_number }}</a>
+          <a href="?page={{ page_number }}">{{ page_number }}</a>
         {% endif %}
       {% endfor %}
 
       {% if pagination.has_next %}
-        <a class="join-item btn btn-sm" href="?page={{ pagination.next_page_number }}">Next</a>
+        <a href="?page={{ pagination.next_page_number }}">Next</a>
       {% else %}
-        <button class="join-item btn btn-sm" disabled>Next</button>
+        <span>Next</span>
       {% endif %}
     </div>
   </nav>
