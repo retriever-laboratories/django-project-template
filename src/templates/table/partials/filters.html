@@ -1,10 +1,32 @@
-<details class="dropdown">
-  <summary>Filter</summary>
-  <ul class="menu dropdown-content z-10 bg-base-100 border border-base-300 p-2">
-    {% for filter in filters %}
-      <li>
-        <button type="button">{{ filter.label }}</button>
-      </li>
-    {% endfor %}
-  </ul>
-</details>
+<div class="flex flex-wrap items-center gap-2">
+  <details class="dropdown">
+    <summary>Filter</summary>
+
+    <div class="dropdown-content z-10 w-64 bg-base-100 border border-base-300 p-2 group/filters">
+      <p class="group-has-[details[open]]/filters:hidden">Filter by</p>
+
+      <ul class="flex flex-col gap-1">
+        {% for filter in filters %}
+          <li class="group-has-[details[open]]/filters:hidden has-[details[open]]:block!">
+            <details class="group/filter">
+              <summary class="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <span class="hidden group-open/filter:inline">←</span>
+                {{ filter.label }}
+              </summary>
+              {% include "table/filters/"|add:filter.type|add:".html" with filter=filter only %}
+            </details>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </details>
+
+  {% for filter in filters %}
+    {% if filter.values %}
+      <span class="flex items-center gap-1 border border-base-300 px-2">
+        {{ filter.label }}: {{ filter.values|join:", " }}
+        <button type="button" aria-label="Remove {{ filter.label }} filter">×</button>
+      </span>
+    {% endif %}
+  {% endfor %}
+</div>
