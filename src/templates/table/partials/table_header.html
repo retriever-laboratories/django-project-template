@@ -1,15 +1,20 @@
 <thead>
   <tr>
-    {% for column in context.table.columns %}
+    {% for column in table.columns %}
       <th scope="col">
         <div class="flex items-center gap-2">
           <span>{{ column.label }}</span>
-          {% if column.sortable %}
+          {% if column.sort.enabled %}
             <button
               type="button"
-              class="btn btn-ghost btn-xs btn-square"
-              aria-label="Sort by {{ column.label }}">
-              <span aria-hidden="true">↕</span>
+              class="btn btn-ghost btn-xs btn-square">
+              {% if column.sort.direction == "asc" %}
+                ↑
+              {% elif column.sort.direction == "desc" %}
+                ↓
+              {% else %}
+                ↕
+              {% endif %}
             </button>
           {% endif %}
         </div>
