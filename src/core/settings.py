@@ -50,9 +50,11 @@ INSTALLED_APPS = [
 
     # Third-party
     "django_htmx",
+    "heroicons",
 
     # Internal
     # add internal apps here
+    "sandbox",  # local table-component testing only, do not promote to PR
 ]
 
 # ----------------------------

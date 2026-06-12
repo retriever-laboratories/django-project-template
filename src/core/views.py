@@ -73,7 +73,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "status",
                     "value": "Active",
-                    "render": {"template": "components/badge.html", "class": "badge badge-success"},
+                    "render": {"template": "components/badge.html", "class": "badge badge-xs badge-soft badge-success"},
                 },
             ],
         },
@@ -86,7 +86,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "status",
                     "value": "Active",
-                    "render": {"template": "components/badge.html", "class": "badge badge-success"},
+                    "render": {"template": "components/badge.html", "class": "badge badge-xs badge-soft badge-success"},
                 },
             ],
         },
@@ -99,7 +99,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "status",
                     "value": "Invited",
-                    "render": {"template": "components/badge.html", "class": "badge badge-warning"},
+                    "render": {"template": "components/badge.html", "class": "badge badge-xs badge-soft badge-warning"},
                 },
             ],
         },

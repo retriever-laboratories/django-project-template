@@ -1,14 +1,14 @@
 <tbody>
   {% for row in table.rows %}
-    <tr{% if row.id %} data-row-id="{{ row.id }}"{% endif %}>
+    <tr{% if row.id %} data-row-id="{{ row.id }}"{% endif %} class="hover:bg-base-300">
       {% for cell in row.cells %}
-        <td>
+        {% if forloop.first %}<th>{% else %}<td>{% endif %}
           {% if cell.render %}
             {% include cell.render.template with value=cell.value class=cell.render.class cell=cell only %}
           {% else %}
             {{ cell.value }}
           {% endif %}
-        </td>
+        {% if forloop.first %}</th>{% else %}</td>{% endif %}
       {% endfor %}
     </tr>
   {% empty %}

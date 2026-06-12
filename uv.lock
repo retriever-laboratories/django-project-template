@@ -45,12 +45,28 @@ source = { virtual = "." }
 dependencies = [
     { name = "django" },
     { name = "django-htmx" },
+    { name = "heroicons", extra = ["django"] },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=6.0.5" },
     { name = "django-htmx", specifier = ">=1.27.0" },
+    { name = "heroicons", extras = ["django"], specifier = ">=2.14.0" },
+]
+
+[[package]]
+name = "heroicons"
+version = "2.14.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/fe/ed8a483bbd518f421b891a3db4eb61c6f2a5f84886a92a80b82d0d6637b5/heroicons-2.14.0.tar.gz", hash = "sha256:e55ecc0a839cf872f55977d2dd04a1855bfdf080bed1d13db5264b0060e65a96", size = 420836, upload-time = "2026-03-08T21:19:46.868Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/08/89/5e1511183a70edb8b10fed0507b76726fe060056c952a53a2484be96db24/heroicons-2.14.0-py3-none-any.whl", hash = "sha256:cdf7fa6de02b7bc5b4513d7f592a9a1faea150b050a3b4270a0dc445ebe930c9", size = 415004, upload-time = "2026-03-08T21:19:45.137Z" },
+]
+
+[package.optional-dependencies]
+django = [
+    { name = "django" },
 ]
 
 [[package]]
