@@ -2,7 +2,13 @@
   {% for row in table.rows %}
     <tr{% if row.id %} data-row-id="{{ row.id }}"{% endif %}>
       {% for cell in row.cells %}
-        <td>{{ cell.value }}</td>
+        <td>
+          {% if cell.render %}
+            {% include cell.render.template with value=cell.value class=cell.render.class cell=cell only %}
+          {% else %}
+            {{ cell.value }}
+          {% endif %}
+        </td>
       {% endfor %}
     </tr>
   {% empty %}

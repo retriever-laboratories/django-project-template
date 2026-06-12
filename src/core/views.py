@@ -69,7 +69,11 @@ TABLE_SPEC = {
                 {"accessor": "name", "value": "Ada Lovelace"},
                 {"accessor": "email", "value": "ada@example.com"},
                 {"accessor": "role", "value": "Admin"},
-                {"accessor": "status", "value": "Active"},
+                {
+                    "accessor": "status",
+                    "value": "Active",
+                    "render": {"template": "components/badge.html", "class": "badge badge-success"},
+                },
             ],
         },
         {
@@ -78,7 +82,11 @@ TABLE_SPEC = {
                 {"accessor": "name", "value": "Alan Turing"},
                 {"accessor": "email", "value": "alan@example.com"},
                 {"accessor": "role", "value": "Editor"},
-                {"accessor": "status", "value": "Active"},
+                {
+                    "accessor": "status",
+                    "value": "Active",
+                    "render": {"template": "components/badge.html", "class": "badge badge-success"},
+                },
             ],
         },
         {
@@ -87,7 +95,11 @@ TABLE_SPEC = {
                 {"accessor": "name", "value": "Grace Hopper"},
                 {"accessor": "email", "value": "grace@example.com"},
                 {"accessor": "role", "value": "Editor"},
-                {"accessor": "status", "value": "Invited"},
+                {
+                    "accessor": "status",
+                    "value": "Invited",
+                    "render": {"template": "components/badge.html", "class": "badge badge-warning"},
+                },
             ],
         },
     ],
