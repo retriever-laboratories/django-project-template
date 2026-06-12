@@ -1,0 +1,29 @@
+<div
+  class="dropdown"
+  x-data="{ open: false }"
+  :class="{ 'dropdown-open': open }"
+  @click.outside="open = false">
+  <button type="button" aria-label="Sort by {{ column.label }}" :aria-expanded="open" @click="open = !open">
+    {% if column.sort.direction == "asc" %}↓{% elif column.sort.direction == "desc" %}↑{% else %}↕{% endif %}
+  </button>
+
+  <div
+    class="dropdown-content z-10 w-40 bg-base-100 border border-base-300 p-2 font-normal"
+    x-show="open"
+    style="display: none">
+    <p>Sort by</p>
+
+    <ul class="flex flex-col gap-1">
+      <li>
+        <button type="button" class="w-full text-left{% if column.sort.direction == 'asc' %} font-semibold{% endif %}">
+          ↓ Ascending
+        </button>
+      </li>
+      <li>
+        <button type="button" class="w-full text-left{% if column.sort.direction == 'desc' %} font-semibold{% endif %}">
+          ↑ Descending
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
