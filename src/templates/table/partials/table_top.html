@@ -1,7 +1,7 @@
 <div class="flex items-center justify-between gap-2 border-b border-base-300 px-4 py-3">
   <div class="flex items-center gap-2">
     {% if table.filters %}
-      {% include "table/partials/filters.html" with filters=table.filters only %}
+      {% include "table/partials/filters.html" with filters=table.filters filters_applied=table.filters_applied only %}
     {% endif %}
   </div>
 

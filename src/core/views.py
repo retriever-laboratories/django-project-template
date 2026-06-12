@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 TABLE_SPEC = {
     "id": "users",
+    "filters_applied": True,
     "filters": [
         {"accessor": "name", "label": "Name", "type": "text", "values": []},
         {"accessor": "email", "label": "Email", "type": "text", "values": []},
