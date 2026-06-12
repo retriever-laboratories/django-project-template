@@ -104,16 +104,17 @@ TABLE_SPEC = {
             ],
         },
     ],
+    "page_size_options": [10, 50, 100],
     "pagination": {
         "number": 1,
-        "has_other_pages": True,
         "has_previous": False,
         "previous_page_number": None,
         "has_next": True,
         "next_page_number": 2,
         "paginator": {
             "num_pages": 2,
-            "page_range": [1, 2],
+            "count": 5,
+            "per_page": 3,
         },
     },
 }
