@@ -1,12 +1,13 @@
 <div class="flex flex-wrap items-center gap-2">
   <div
-    class="relative"
+    class="dropdown"
     x-data="{ open: false, active: null }"
+    :class="{ 'dropdown-open': open }"
     @click.outside="open = false; active = null">
     <button type="button" :aria-expanded="open" @click="open = !open; active = null">Filter</button>
 
     <div
-      class="absolute z-10 mt-1 w-64 bg-base-100 border border-base-300 p-2"
+      class="dropdown-content z-10 w-64 bg-base-100 border border-base-300 p-2"
       x-show="open"
       style="display: none">
       <div x-show="!active">
