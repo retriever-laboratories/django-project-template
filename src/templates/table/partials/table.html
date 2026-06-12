@@ -1,8 +1,8 @@
 <div id="table-{{ table.id }}" class="border border-base-300">
   {% include "table/partials/table_top.html" with table=table top_right_partial=top_right_partial only %}
 
-  <div class="overflow-x-auto">
-    <table id="{{ table.id }}" class="table">
+  <div class="overflow-auto max-h-[385px]">
+    <table id="{{ table.id }}" class="table table-sm w-full table-pin-rows table-pin-cols">
       {% include "table/partials/table_header.html" with table=table only %}
       {% include "table/partials/table_rows.html" with table=table only %}
     </table>

@@ -1,13 +1,12 @@
 <thead>
   <tr>
     {% for column in table.columns %}
-      <th scope="col">
-        <div class="flex items-center gap-2">
-          <span>{{ column.label }}</span>
-          {% if column.sort.enabled %}
-            {% include "table/partials/sort.html" with column=column only %}
-          {% endif %}
-        </div>
+      <th scope="col" class="z-[2]">
+        {% if column.sort.enabled %}
+          {% include "table/partials/sort.html" with column=column only %}
+        {% else %}
+          {{ column.label }}
+        {% endif %}
       </th>
     {% endfor %}
   </tr>

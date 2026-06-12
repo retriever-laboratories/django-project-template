@@ -1,29 +1,36 @@
+{% load heroicons %}
 <div
-  class="dropdown"
+  class="dropdown dropdown-bottom dropdown-start"
   x-data="{ open: false }"
   :class="{ 'dropdown-open': open }"
   @click.outside="open = false">
-  <button type="button" aria-label="Sort by {{ column.label }}" :aria-expanded="open" @click="open = !open">
-    {% if column.sort.direction == "asc" %}↓{% elif column.sort.direction == "desc" %}↑{% else %}↕{% endif %}
+  <button type="button" class="flex cursor-pointer items-center gap-1" :aria-expanded="open" @click="open = !open">
+    {{ column.label }}
+    {% if column.sort.direction == "asc" %}
+      {% heroicon_mini "arrow-down" class="size-4" %}
+    {% elif column.sort.direction == "desc" %}
+      {% heroicon_mini "arrow-up" class="size-4" %}
+    {% else %}
+      {% heroicon_mini "chevron-up-down" class="size-4 text-base-content/30" %}
+    {% endif %}
   </button>
 
-  <div
-    class="dropdown-content z-10 w-40 bg-base-100 border border-base-300 p-2 font-normal"
+  <ul
+    class="dropdown-content menu menu-vertical menu-xs z-10 w-[141px] rounded-box bg-base-100 font-normal"
     x-show="open"
     style="display: none">
-    <p>Sort by</p>
-
-    <ul class="flex flex-col gap-1">
-      <li>
-        <button type="button" class="w-full text-left{% if column.sort.direction == 'asc' %} font-semibold{% endif %}">
-          ↓ Ascending
-        </button>
-      </li>
-      <li>
-        <button type="button" class="w-full text-left{% if column.sort.direction == 'desc' %} font-semibold{% endif %}">
-          ↑ Descending
-        </button>
-      </li>
-    </ul>
-  </div>
+    <li class="menu-title">Sort by</li>
+    <li>
+      <button type="button" {% if column.sort.direction == "asc" %}class="font-semibold"{% endif %}>
+        {% heroicon_mini "arrow-down" class="size-4" %}
+        Ascending
+      </button>
+    </li>
+    <li>
+      <button type="button" {% if column.sort.direction == "desc" %}class="font-semibold"{% endif %}>
+        {% heroicon_mini "arrow-up" class="size-4" %}
+        Descending
+      </button>
+    </li>
+  </ul>
 </div>
