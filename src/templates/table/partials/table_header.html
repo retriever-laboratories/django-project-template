@@ -5,15 +5,7 @@
         <div class="flex items-center gap-2">
           <span>{{ column.label }}</span>
           {% if column.sort.enabled %}
-            <button type="button">
-              {% if column.sort.direction == "asc" %}
-                ↑
-              {% elif column.sort.direction == "desc" %}
-                ↓
-              {% else %}
-                ↕
-              {% endif %}
-            </button>
+            {% include "table/partials/sort.html" with column=column only %}
           {% endif %}
         </div>
       </th>
