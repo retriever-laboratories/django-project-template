@@ -35,6 +35,8 @@
     </div>
   </div>
 
+  <button type="button" {% if not filters_applied %}disabled{% endif %}>Clear all</button>
+
   {% for filter in filters %}
     {% if filter.values %}
       <span class="flex items-center gap-1 border border-base-300 px-2">
