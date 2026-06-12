@@ -1,29 +1,42 @@
-{% if pagination.has_other_pages %}
-  <nav class="flex items-center justify-between gap-3 border-t border-base-300 px-4 py-3" aria-label="Table pagination">
-    <p>
-      Page {{ pagination.number }} of {{ pagination.paginator.num_pages }}
-    </p>
+<nav class="flex flex-wrap items-center gap-2 text-sm" aria-label="Table pagination">
+  <p>Page <span class="font-bold">{{ pagination.number }}</span> of <span class="font-bold">{{ pagination.paginator.num_pages }}</span></p>
 
-    <div class="flex items-center gap-2">
-      {% if pagination.has_previous %}
-        <a href="?page={{ pagination.previous_page_number }}">Previous</a>
-      {% else %}
-        <span>Previous</span>
-      {% endif %}
+  <div class="join">
+    {% if pagination.has_previous %}
+      <a class="join-item btn btn-xs w-[26px]" href="?page={{ pagination.previous_page_number }}" aria-label="Previous page">«</a>
+    {% else %}
+      <button class="join-item btn btn-xs w-[26px]" disabled aria-label="Previous page">«</button>
+    {% endif %}
 
-      {% for page_number in pagination.paginator.page_range %}
-        {% if page_number == pagination.number %}
-          <strong aria-current="page">{{ page_number }}</strong>
-        {% else %}
-          <a href="?page={{ page_number }}">{{ page_number }}</a>
-        {% endif %}
-      {% endfor %}
+    {% if pagination.has_next %}
+      <a class="join-item btn btn-xs w-[26px]" href="?page={{ pagination.next_page_number }}" aria-label="Next page">»</a>
+    {% else %}
+      <button class="join-item btn btn-xs w-[26px]" disabled aria-label="Next page">»</button>
+    {% endif %}
+  </div>
 
-      {% if pagination.has_next %}
-        <a href="?page={{ pagination.next_page_number }}">Next</a>
-      {% else %}
-        <span>Next</span>
-      {% endif %}
+  <p><span class="font-bold">{{ pagination.paginator.count }}</span> Total items{% if page_size_options %} <span class="font-bold">/</span> Showing{% endif %}</p>
+
+  {% if page_size_options %}
+    <div
+      class="dropdown dropdown-top dropdown-center"
+      x-data="{ open: false }"
+      :class="{ 'dropdown-open': open }"
+      @click.outside="open = false">
+      <button type="button" class="btn btn-sm btn-outline w-[50px]" :aria-expanded="open" @click="open = !open">
+        {{ pagination.paginator.per_page }}
+      </button>
+
+      <ul
+        class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs"
+        x-show="open"
+        style="display: none">
+        {% for page_size in page_size_options %}
+          <li><button type="button">{{ page_size }}</button></li>
+        {% endfor %}
+      </ul>
     </div>
-  </nav>
-{% endif %}
+
+    <p>items per page.</p>
+  {% endif %}
+</nav>

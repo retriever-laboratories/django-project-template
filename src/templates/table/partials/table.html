@@ -9,7 +9,7 @@
   </div>
 
   {% if table.pagination %}
-    {% include "table/partials/pagination.html" with pagination=table.pagination only %}
+    {% include "table/partials/pagination.html" with pagination=table.pagination page_size_options=table.page_size_options only %}
   {% endif %}
 
   {% include "table/partials/table_bottom.html" with table=table only %}
