@@ -1,4 +1,6 @@
-<div class="flex flex-col gap-2">
+<div
+  class="flex flex-col gap-2"
+  x-data="{ values: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}] }">
   <ul class="flex flex-col gap-1">
     {% for option in filter.options %}
       <li>
@@ -6,14 +8,13 @@
           <input
             type="checkbox"
             class="checkbox checkbox-xs rounded-sm"
-            name="{{ filter.accessor }}"
             value="{{ option.value }}"
-            {% if option.value in filter.values %}checked{% endif %}/>
+            x-model="values"/>
           {{ option.label }}
         </label>
       </li>
     {% endfor %}
   </ul>
 
-  {% include "table/filters/actions.html" with can_apply=filter.values only %}
+  {% include "table/filters/actions.html" only %}
 </div>
