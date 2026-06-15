@@ -67,44 +67,51 @@ TABLE_SPEC = {
         {
             "id": 1,
             "cells": [
-                {"accessor": "name", "value": "Ada Lovelace"},
+                {"accessor": "name", "value": "Ada Lovelace", "class": "font-bold"},
                 {"accessor": "email", "value": "ada@example.com"},
                 {"accessor": "role", "value": "Admin"},
                 {
                     "accessor": "status",
                     "value": "Active",
-                    "render": {"template": "components/badge.html", "class": "badge badge-xs badge-soft badge-success"},
+                    "render": "components/badge.html",
+                    "class": "badge-success",
                 },
             ],
         },
         {
             "id": 2,
             "cells": [
-                {"accessor": "name", "value": "Alan Turing"},
+                {"accessor": "name", "value": "Alan Turing", "class": "font-bold"},
                 {"accessor": "email", "value": "alan@example.com"},
                 {"accessor": "role", "value": "Editor"},
                 {
                     "accessor": "status",
                     "value": "Active",
-                    "render": {"template": "components/badge.html", "class": "badge badge-xs badge-soft badge-success"},
+                    "render": "components/badge.html",
+                    "class": "badge-success",
                 },
             ],
         },
         {
             "id": 3,
             "cells": [
-                {"accessor": "name", "value": "Grace Hopper"},
+                {"accessor": "name", "value": "Grace Hopper", "class": "font-bold"},
                 {"accessor": "email", "value": "grace@example.com"},
                 {"accessor": "role", "value": "Editor"},
                 {
                     "accessor": "status",
                     "value": "Invited",
-                    "render": {"template": "components/badge.html", "class": "badge badge-xs badge-soft badge-warning"},
+                    "render": "components/badge.html",
+                    "class": "badge-warning",
                 },
             ],
         },
     ],
     "page_size_options": [10, 50, 100],
+    "actions": {
+        "top_right": "components/download_button.html",
+        "bottom_right": "components/add_button.html",
+    },
     "pagination": {
         "number": 1,
         "has_previous": False,

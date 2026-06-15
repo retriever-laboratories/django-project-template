@@ -1,4 +1,13 @@
-<div class="flex items-center justify-end gap-2 border-t border-base-300 px-4 py-3">
-  <button type="button">Cancel</button>
-  <button type="button">Confirm</button>
+<div class="flex items-center justify-between gap-2">
+  <div class="flex flex-wrap items-center gap-2">
+    {% if table.actions.bottom_left %}
+      {% include table.actions.bottom_left with table=table only %}
+    {% endif %}
+  </div>
+
+  <div class="flex items-center gap-2">
+    {% if table.actions.bottom_right %}
+      {% include table.actions.bottom_right with table=table only %}
+    {% endif %}
+  </div>
 </div>
