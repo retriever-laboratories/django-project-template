@@ -3,7 +3,7 @@
     <tr{% if row.id %} data-row-id="{{ row.id }}"{% endif %} class="hover:bg-base-300">
       {% for cell in row.cells %}
         {% if cell.render %}
-          <td>{% include cell.render with value=cell.value class=cell.class cell=cell only %}</td>
+          <td>{% include cell.render with value=cell.value class=cell.class props=cell.props only %}</td>
         {% else %}
           <td{% if cell.class %} class="{{ cell.class }}"{% endif %}>{{ cell.value }}</td>
         {% endif %}
