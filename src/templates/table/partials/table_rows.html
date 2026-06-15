@@ -2,13 +2,13 @@
   {% for row in table.rows %}
     <tr{% if row.id %} data-row-id="{{ row.id }}"{% endif %} class="hover:bg-base-300">
       {% for cell in row.cells %}
-        {% if forloop.first %}<th>{% else %}<td>{% endif %}
+        <td>
           {% if cell.render %}
             {% include cell.render.template with value=cell.value class=cell.render.class cell=cell only %}
           {% else %}
             {{ cell.value }}
           {% endif %}
-        {% if forloop.first %}</th>{% else %}</td>{% endif %}
+        </td>
       {% endfor %}
     </tr>
   {% empty %}
