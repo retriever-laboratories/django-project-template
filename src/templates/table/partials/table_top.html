@@ -1,7 +1,7 @@
 <div class="flex items-start justify-between gap-2">
   <div class="flex flex-wrap items-start gap-2">
     {% if table.filters %}
-      {% include "table/partials/filters.html" with filters=table.filters filters_applied=table.filters_applied only %}
+      {% include "table/partials/filters.html" with filters=table.filters filters_applied=table.filters_applied filters_base_url=table.filters_base_url only %}
     {% endif %}
 
     {% if table.filters_applied %}

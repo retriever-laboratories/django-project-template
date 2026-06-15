@@ -1,6 +1,7 @@
 {% load heroicons %}
 <div class="flex items-center gap-2">
-  <div
+  <form
+    hx-get="{{ filters_base_url }}"
     class="dropdown dropdown-bottom"
     x-data="{ open: false, active: null }"
     :class="{ 'dropdown-open': open }"
@@ -23,22 +24,23 @@
     </ul>
 
     {% for filter in filters %}
-      <template x-if="open && active === '{{ filter.accessor }}'">
-        <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm">
-          <div class="card-body">
-            <div class="card-title gap-2">
-              <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
-                {% heroicon_micro "arrow-left" class="size-4" %}
-              </button>
-              <span>{{ filter.label }}</span>
-            </div>
-
-            {% include "table/filters/"|add:filter.type|add:".html" with filter=filter only %}
+      <div
+        class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm"
+        x-show="open && active === '{{ filter.accessor }}'"
+        style="display: none">
+        <div class="card-body">
+          <div class="card-title gap-2">
+            <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
+              {% heroicon_micro "arrow-left" class="size-4" %}
+            </button>
+            <span>{{ filter.label }}</span>
           </div>
-        </div>
-      </template>
-    {% endfor %}
-  </div>
 
-  <button type="button" class="btn btn-sm" {% if not filters_applied %}disabled{% endif %}>Clear all</button>
+          {% include "table/filters/"|add:filter.type|add:".html" with filter=filter only %}
+        </div>
+      </div>
+    {% endfor %}
+  </form>
+
+  <button type="button" class="btn btn-sm" {% if filters_base_url %}hx-get="{{ filters_base_url }}"{% endif %} {% if not filters_applied %}disabled{% endif %}>Clear all</button>
 </div>

@@ -2,11 +2,9 @@
 <div
   class="flex flex-col gap-2"
   x-data="{
-    initial: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
     values: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
     input: '',
     add() { const value = this.input.trim(); if (value) { this.values.push(value); this.input = '' } },
-    changed() { const a = [...this.values].sort(), b = [...this.initial].sort(); return a.length !== b.length || a.some((value, index) => value !== b[index]) },
   }">
   <div class="join">
     <label class="input input-sm validator join-item">
@@ -17,6 +15,10 @@
       {% heroicon_micro "plus" class="size-4" %}
     </button>
   </div>
+
+  <template x-for="(value, index) in values" :key="'input-' + index">
+    <input type="hidden" name="{{ filter.accessor }}" :value="value"/>
+  </template>
 
   <div class="flex flex-col items-start gap-2 pt-2" x-show="values.length">
     <template x-for="(value, index) in values" :key="index">
