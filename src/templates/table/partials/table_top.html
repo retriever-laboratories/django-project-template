@@ -10,8 +10,8 @@
   </div>
 
   <div class="flex items-center gap-2">
-    {% if top_right_partial %}
-      {% include top_right_partial %}
+    {% if table.actions.top_right %}
+      {% include table.actions.top_right with table=table only %}
     {% endif %}
   </div>
 </div>
