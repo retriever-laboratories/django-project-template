@@ -32,6 +32,14 @@ TABLE_SPEC = {
     ],
     "columns": [
         {
+            "accessor": "id",
+            "label": "Id",
+            "sort": {
+                "enabled": True,
+                "direction": None,
+            },
+        },
+        {
             "accessor": "name",
             "label": "Name",
             "sort": {
@@ -67,6 +75,7 @@ TABLE_SPEC = {
         {
             "id": 1,
             "cells": [
+                {"accessor": "id", "value": "01", "render": "components/link.html", "class": "link-primary", "props": {"href": "#"}},
                 {"accessor": "name", "value": "Ada Lovelace", "class": "font-bold"},
                 {"accessor": "email", "value": "ada@example.com"},
                 {"accessor": "role", "value": "Admin"},
@@ -81,6 +90,7 @@ TABLE_SPEC = {
         {
             "id": 2,
             "cells": [
+                {"accessor": "id", "value": "02", "render": "components/link.html", "class": "link-primary", "props": {"href": "#"}},
                 {"accessor": "name", "value": "Alan Turing", "class": "font-bold"},
                 {"accessor": "email", "value": "alan@example.com"},
                 {"accessor": "role", "value": "Editor"},
@@ -95,6 +105,7 @@ TABLE_SPEC = {
         {
             "id": 3,
             "cells": [
+                {"accessor": "id", "value": "03", "render": "components/link.html", "class": "link-primary", "props": {"href": "#"}},
                 {"accessor": "name", "value": "Grace Hopper", "class": "font-bold"},
                 {"accessor": "email", "value": "grace@example.com"},
                 {"accessor": "role", "value": "Editor"},
