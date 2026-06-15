@@ -1,15 +1,20 @@
-<div class="flex flex-col gap-2 p-2">
-  <div class="flex items-center gap-2">
-    <input type="search" name="{{ filter.accessor }}" placeholder="search"/>
-    <button type="button">+ Add</button>
+{% load heroicons %}
+<div class="flex flex-col gap-2">
+  <div class="join">
+    <input type="search" name="{{ filter.accessor }}" placeholder="search" class="input input-sm validator join-item"/>
+    <button type="button" class="btn btn-sm join-item" aria-label="Add criteria">
+      {% heroicon_micro "plus" class="size-4" %}
+    </button>
   </div>
 
   {% if filter.values %}
-    <div class="flex flex-wrap items-center gap-2">
+    <div class="flex flex-col items-start gap-2 pt-2">
       {% for value in filter.values %}
-        <span class="flex items-center gap-1 border border-base-300 px-2">
+        <span class="badge badge-sm badge-ghost gap-1">
           {{ value }}
-          <button type="button" aria-label="Remove {{ value }}">×</button>
+          <button type="button" aria-label="Remove {{ value }}">
+            {% heroicon_micro "x-mark" class="size-3" %}
+          </button>
         </span>
       {% endfor %}
     </div>

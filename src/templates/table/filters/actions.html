@@ -1,4 +1,4 @@
-<div class="flex items-center justify-between gap-2 pt-2">
-  <button type="button" @click="open = false; active = null">Close</button>
-  <button type="button" {% if not can_apply %}disabled{% endif %}>Apply</button>
+<div class="card-actions justify-end gap-1 pt-2">
+  <button type="button" class="btn btn-sm btn-primary btn-outline" @click="open = false; active = null">Close</button>
+  <button type="button" class="btn btn-sm btn-primary" {% if not can_apply %}disabled{% endif %}>Apply</button>
 </div>

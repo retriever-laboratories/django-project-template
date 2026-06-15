@@ -5,7 +5,7 @@ TABLE_SPEC = {
     "id": "users",
     "filters_applied": True,
     "filters": [
-        {"accessor": "name", "label": "Name", "type": "text", "values": []},
+        {"accessor": "name", "label": "Name", "type": "text", "values": ["Ada", "Grace"]},
         {"accessor": "email", "label": "Email", "type": "text", "values": []},
         {
             "accessor": "role",
@@ -27,7 +27,7 @@ TABLE_SPEC = {
                 {"value": "invited", "label": "Invited"},
                 {"value": "disabled", "label": "Disabled"},
             ],
-            "values": [],
+            "values": ["active"],
         },
     ],
     "columns": [
