@@ -1,27 +1,31 @@
 {% load heroicons %}
-<div class="flex flex-col gap-2">
+<div
+  class="flex flex-col gap-2"
+  x-data="{
+    values: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+    input: '',
+    add() { const value = this.input.trim(); if (value) { this.values.push(value); this.input = '' } },
+  }">
   <div class="join">
     <label class="input input-sm validator join-item">
       {% heroicon_micro "magnifying-glass" class="size-4 opacity-50" %}
-      <input type="search" name="{{ filter.accessor }}" placeholder="search"/>
+      <input type="search" placeholder="search" x-model="input" @keydown.enter.prevent="add()"/>
     </label>
-    <button type="button" class="btn btn-sm btn-success join-item" aria-label="Add criteria">
+    <button type="button" class="btn btn-sm btn-success join-item" aria-label="Add criteria" @click="add()">
       {% heroicon_micro "plus" class="size-4" %}
     </button>
   </div>
 
-  {% if filter.values %}
-    <div class="flex flex-col items-start gap-2 pt-2">
-      {% for value in filter.values %}
-        <span class="badge badge-sm badge-ghost gap-1">
-          {{ value }}
-          <button type="button" class="cursor-pointer" aria-label="Remove {{ value }}">
-            {% heroicon_micro "x-mark" class="size-3" %}
-          </button>
-        </span>
-      {% endfor %}
-    </div>
-  {% endif %}
+  <div class="flex flex-col items-start gap-2 pt-2" x-show="values.length">
+    <template x-for="(value, index) in values" :key="index">
+      <span class="badge badge-sm badge-ghost gap-1">
+        <span x-text="value"></span>
+        <button type="button" class="cursor-pointer" :aria-label="'Remove ' + value" @click="values.splice(index, 1)">
+          {% heroicon_micro "x-mark" class="size-3" %}
+        </button>
+      </span>
+    </template>
+  </div>
 
-  {% include "table/filters/actions.html" with can_apply=filter.values only %}
+  {% include "table/filters/actions.html" only %}
 </div>
