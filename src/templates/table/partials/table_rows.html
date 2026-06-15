@@ -2,13 +2,11 @@
   {% for row in table.rows %}
     <tr{% if row.id %} data-row-id="{{ row.id }}"{% endif %} class="hover:bg-base-300">
       {% for cell in row.cells %}
-        <td>
-          {% if cell.render %}
-            {% include cell.render.template with value=cell.value class=cell.render.class cell=cell only %}
-          {% else %}
-            {{ cell.value }}
-          {% endif %}
-        </td>
+        {% if cell.render %}
+          <td>{% include cell.render with value=cell.value class=cell.class cell=cell only %}</td>
+        {% else %}
+          <td{% if cell.class %} class="{{ cell.class }}"{% endif %}>{{ cell.value }}</td>
+        {% endif %}
       {% endfor %}
     </tr>
   {% empty %}
