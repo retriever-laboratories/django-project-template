@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import path
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
-from urllib.parse import urlsplit, urlunsplit
+
 
 def health(_):
     return JsonResponse({"status": "ok"})
@@ -20,9 +20,11 @@ def home(request):
         {"database": settings.DATABASE_URL.split("/")[-1] or "Not set"},
     )
 
+
 @require_POST
 def ping(request):
     return render(request, "partials/ping_result.html", {"ok": True})
+
 
 def db_ping(request):
     try:
@@ -43,12 +45,11 @@ def db_ping(request):
         {"ok": True, "result": result},
     )
 
+
 urlpatterns = [
     path("", home, name="home"),
-
     # Admin site
     path("admin/", admin.site.urls),
-
     # Global endpoints
     path("health/", health, name="health"),
     path("db-ping/", db_ping, name="db_ping"),
