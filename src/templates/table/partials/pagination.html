@@ -2,14 +2,14 @@
   <p>Page <span class="font-bold">{{ pagination.number }}</span> of <span class="font-bold">{{ pagination.paginator.num_pages }}</span></p>
 
   <div class="join">
-    {% if pagination.has_previous %}
-      <a class="join-item btn btn-xs w-[26px]" href="?page={{ pagination.previous_page_number }}" aria-label="Previous page">«</a>
+    {% if pagination.prev_url %}
+      <button class="join-item btn btn-xs w-[26px]" hx-get="{{ pagination.prev_url }}" aria-label="Previous page">«</button>
     {% else %}
       <button class="join-item btn btn-xs w-[26px]" disabled aria-label="Previous page">«</button>
     {% endif %}
 
-    {% if pagination.has_next %}
-      <a class="join-item btn btn-xs w-[26px]" href="?page={{ pagination.next_page_number }}" aria-label="Next page">»</a>
+    {% if pagination.next_url %}
+      <button class="join-item btn btn-xs w-[26px]" hx-get="{{ pagination.next_url }}" aria-label="Next page">»</button>
     {% else %}
       <button class="join-item btn btn-xs w-[26px]" disabled aria-label="Next page">»</button>
     {% endif %}
@@ -31,8 +31,8 @@
         class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs"
         x-show="open"
         style="display: none">
-        {% for page_size in page_size_options %}
-          <li><button type="button">{{ page_size }}</button></li>
+        {% for option in page_size_options %}
+          <li><button type="button" hx-get="{{ option.url }}">{{ option.size }}</button></li>
         {% endfor %}
       </ul>
     </div>
