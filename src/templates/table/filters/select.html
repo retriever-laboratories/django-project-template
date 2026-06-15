@@ -1,10 +1,4 @@
-<div
-  class="flex flex-col gap-2"
-  x-data="{
-    initial: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
-    values: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
-    changed() { const a = [...this.values].sort(), b = [...this.initial].sort(); return a.length !== b.length || a.some((value, index) => value !== b[index]) },
-  }">
+<div class="flex flex-col gap-2">
   <ul class="flex flex-col gap-1">
     {% for option in filter.options %}
       <li>
@@ -12,8 +6,9 @@
           <input
             type="checkbox"
             class="checkbox checkbox-xs rounded-sm"
+            name="{{ filter.accessor }}"
             value="{{ option.value }}"
-            x-model="values"/>
+            {% if option.value in filter.values %}checked{% endif %}/>
           {{ option.label }}
         </label>
       </li>

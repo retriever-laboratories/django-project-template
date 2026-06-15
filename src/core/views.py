@@ -3,10 +3,23 @@ from django.shortcuts import render
 
 TABLE_SPEC = {
     "id": "users",
+    "filters_base_url": "/table/?sort=name",
     "filters_applied": True,
     "filters": [
-        {"accessor": "name", "label": "Name", "type": "text", "values": ["Ada", "Grace"]},
-        {"accessor": "email", "label": "Email", "type": "text", "values": []},
+        {
+            "accessor": "name",
+            "label": "Name",
+            "type": "text",
+            "values": ["Ada"],
+            "badges": [{"value": "Ada", "remove_url": "?role=admin&role=editor"}],
+        },
+        {
+            "accessor": "email",
+            "label": "Email",
+            "type": "text",
+            "values": [],
+            "badges": [],
+        },
         {
             "accessor": "role",
             "label": "Role",
@@ -17,6 +30,10 @@ TABLE_SPEC = {
                 {"value": "viewer", "label": "Viewer"},
             ],
             "values": ["admin", "editor"],
+            "badges": [
+                {"value": "admin", "remove_url": "?name=Ada&role=editor"},
+                {"value": "editor", "remove_url": "?name=Ada&role=admin"},
+            ],
         },
         {
             "accessor": "status",
@@ -27,7 +44,8 @@ TABLE_SPEC = {
                 {"value": "invited", "label": "Invited"},
                 {"value": "disabled", "label": "Disabled"},
             ],
-            "values": ["active"],
+            "values": [],
+            "badges": [],
         },
     ],
     "columns": [
@@ -118,17 +136,19 @@ TABLE_SPEC = {
             ],
         },
     ],
-    "page_size_options": [10, 50, 100],
+    "page_size_options": [
+        {"size": 10, "url": "?page_size=10"},
+        {"size": 50, "url": "?page_size=50"},
+        {"size": 100, "url": "?page_size=100"},
+    ],
     "actions": {
         "top_right": "components/download_button.html",
         "bottom_right": "components/add_button.html",
     },
     "pagination": {
         "number": 1,
-        "has_previous": False,
-        "previous_page_number": None,
-        "has_next": True,
-        "next_page_number": 2,
+        "prev_url": None,
+        "next_url": "?page=2",
         "paginator": {
             "num_pages": 2,
             "count": 5,
@@ -139,7 +159,6 @@ TABLE_SPEC = {
 
 
 def table(request):
-    context = {
-        "table": TABLE_SPEC,
-    }
-    return render(request, "table/index.html", {"context": context})
+    if request.htmx:
+        return render(request, "table/partials/table.html", {"table": TABLE_SPEC})
+    return render(request, "table/index.html", {"context": {"table": TABLE_SPEC}})
