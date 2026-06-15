@@ -1,8 +1,11 @@
 {% load heroicons %}
 <div class="flex flex-col gap-2">
   <div class="join">
-    <input type="search" name="{{ filter.accessor }}" placeholder="search" class="input input-sm validator join-item"/>
-    <button type="button" class="btn btn-sm join-item" aria-label="Add criteria">
+    <label class="input input-sm validator join-item">
+      {% heroicon_micro "magnifying-glass" class="size-4 opacity-50" %}
+      <input type="search" name="{{ filter.accessor }}" placeholder="search"/>
+    </label>
+    <button type="button" class="btn btn-sm btn-success join-item" aria-label="Add criteria">
       {% heroicon_micro "plus" class="size-4" %}
     </button>
   </div>
@@ -12,7 +15,7 @@
       {% for value in filter.values %}
         <span class="badge badge-sm badge-ghost gap-1">
           {{ value }}
-          <button type="button" aria-label="Remove {{ value }}">
+          <button type="button" class="cursor-pointer" aria-label="Remove {{ value }}">
             {% heroicon_micro "x-mark" class="size-3" %}
           </button>
         </span>
