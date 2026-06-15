@@ -1,6 +1,10 @@
 <div
   class="flex flex-col gap-2"
-  x-data="{ values: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}] }">
+  x-data="{
+    initial: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+    values: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+    changed() { const a = [...this.values].sort(), b = [...this.initial].sort(); return a.length !== b.length || a.some((value, index) => value !== b[index]) },
+  }">
   <ul class="flex flex-col gap-1">
     {% for option in filter.options %}
       <li>
