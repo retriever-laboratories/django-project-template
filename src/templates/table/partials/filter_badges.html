@@ -7,7 +7,7 @@
         {% for value in filter.values %}
           <span class="badge badge-xs gap-1">
             {{ value }}
-            <button type="button" aria-label="Remove {{ value }}">
+            <button type="button" class="cursor-pointer" aria-label="Remove {{ value }}">
               {% heroicon_micro "x-mark" class="size-3" %}
             </button>
           </span>
