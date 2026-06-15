@@ -21,13 +21,13 @@
     style="display: none">
     <li class="menu-title">Sort by</li>
     <li>
-      <button type="button" {% if column.sort.direction == "asc" %}class="font-semibold"{% endif %}>
+      <button type="button" {% if column.sort.asc_url %}hx-get="{{ column.sort.asc_url }}"{% endif %} {% if column.sort.direction == "asc" %}class="font-semibold"{% endif %}>
         {% heroicon_mini "arrow-down" class="size-4" %}
         Ascending
       </button>
     </li>
     <li>
-      <button type="button" {% if column.sort.direction == "desc" %}class="font-semibold"{% endif %}>
+      <button type="button" {% if column.sort.desc_url %}hx-get="{{ column.sort.desc_url }}"{% endif %} {% if column.sort.direction == "desc" %}class="font-semibold"{% endif %}>
         {% heroicon_mini "arrow-up" class="size-4" %}
         Descending
       </button>
