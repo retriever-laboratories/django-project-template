@@ -23,21 +23,20 @@
     </ul>
 
     {% for filter in filters %}
-      <div
-        class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm"
-        x-show="open && active === '{{ filter.accessor }}'"
-        style="display: none">
-        <div class="card-body">
-          <div class="card-title gap-2">
-            <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
-              {% heroicon_micro "arrow-left" class="size-4" %}
-            </button>
-            <span>{{ filter.label }}</span>
-          </div>
+      <template x-if="open && active === '{{ filter.accessor }}'">
+        <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm">
+          <div class="card-body">
+            <div class="card-title gap-2">
+              <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
+                {% heroicon_micro "arrow-left" class="size-4" %}
+              </button>
+              <span>{{ filter.label }}</span>
+            </div>
 
-          {% include "table/filters/"|add:filter.type|add:".html" with filter=filter only %}
+            {% include "table/filters/"|add:filter.type|add:".html" with filter=filter only %}
+          </div>
         </div>
-      </div>
+      </template>
     {% endfor %}
   </div>
 
