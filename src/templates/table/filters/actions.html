@@ -1,4 +1,4 @@
 <div class="flex gap-4 pt-2">
   <button type="button" class="btn btn-sm btn-primary btn-outline flex-1" @click="open = false; active = null">Close</button>
-  <button type="button" class="btn btn-sm btn-primary flex-1" {% if not can_apply %}disabled{% endif %}>Apply</button>
+  <button type="button" class="btn btn-sm btn-primary flex-1" :disabled="!values.length">Apply</button>
 </div>
