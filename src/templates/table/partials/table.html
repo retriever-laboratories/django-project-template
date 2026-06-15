@@ -1,5 +1,5 @@
 <div id="table-{{ table.id }}" class="flex flex-col gap-8">
-  {% include "table/partials/table_top.html" with table=table top_right_partial=top_right_partial only %}
+  {% include "table/partials/table_top.html" with table=table only %}
 
   <div class="overflow-auto max-h-[385px]">
     <table id="{{ table.id }}" class="table table-sm w-full table-pin-rows">
@@ -12,5 +12,7 @@
     {% include "table/partials/pagination.html" with pagination=table.pagination page_size_options=table.page_size_options only %}
   {% endif %}
 
-  {% include "table/partials/table_bottom.html" with table=table only %}
+  {% if table.actions.bottom_left or table.actions.bottom_right %}
+    {% include "table/partials/table_bottom.html" with table=table only %}
+  {% endif %}
 </div>
