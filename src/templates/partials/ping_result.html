@@ -1,6 +1,24 @@
 {% if ok %}
-<div class="toast success">HTMX POST OK</div>
+  <div
+    class="alert alert-success"
+    hx-swap-oob="beforeend:#toasts"
+    data-ttl="3000"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true">
+    <span class="badge bg-success">HTMX POST OK</span>
+    <button class="btn btn-ghost btn-xs toast-close" type="button" aria-label="Dismiss">x</button>
+  </div>
 {% else %}
-<div class="toast error">HTMX POST failed</div>
+  <div
+    class="alert alert-error"
+    hx-swap-oob="beforeend:#toasts"
+    data-ttl="5000"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true">
+    <span>HTMX POST failed</span>
+    <button class="btn btn-ghost btn-xs toast-close" type="button" aria-label="Dismiss">x</button>
+  </div>
 {% endif %}
 

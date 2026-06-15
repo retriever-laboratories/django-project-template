@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 from pathlib import Path
+from importlib.util import find_spec
 import os
 
 # ----------------------------
@@ -35,6 +36,8 @@ ALLOWED_HOSTS = [h for h in os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0
 # Optional: CSRF Trusted Origins (needed when serving behind a domain with HTTPS)
 # Comma-separated full origins: e.g. "https://myapp.example.com,https://staging.example.com"
 CSRF_TRUSTED_ORIGINS = [o for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o]
+USE_X_FORWARDED_HOST = True if os.getenv("LOCAL_DEVELOPMENT", None) else False
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https") if os.getenv("LOCAL_DEVELOPMENT", None) else None
 
 # ----------------------------
 # Applications
@@ -58,10 +61,10 @@ INSTALLED_APPS = [
 # ----------------------------
 # Middleware
 # ----------------------------
+HAS_WHITENOISE = find_spec("whitenoise") is not None
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # For production, we can add WhiteNoise
-    # "whitenoise.middleware.WhiteNoiseMiddleware",
 
     # Django core
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -74,6 +77,9 @@ MIDDLEWARE = [
     # HTMX helper (adds request.htmx, etc.)
     "django_htmx.middleware.HtmxMiddleware",
 ]
+
+if HAS_WHITENOISE:
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 ROOT_URLCONF = "core.urls"
 
@@ -160,6 +166,19 @@ STATICFILES_DIRS = [
 
 # Where collectstatic will gather files for production serving
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": (
+            "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            if HAS_WHITENOISE
+            else "django.contrib.staticfiles.storage.StaticFilesStorage"
+        ),
+    },
+}
 
 # Media (user uploads)
 MEDIA_URL = "/media/"

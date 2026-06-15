@@ -3,13 +3,29 @@
 {% block content %}
   <h1>Home</h1>
 
+  
+
   <button
     id="ping-btn"
-    hx-post="{% url 'base:ping' %}"
+    class="btn btn-primary"
+    hx-post="{% url 'ping' %}"
     hx-target="#ping-result"
     hx-swap="innerHTML">
     Ping (HTMX POST)
   </button>
 
-  <div id="ping-result" class="mt-2"></div>
+  <div id="ping-result" class="mt-2">No POST Call</div>
+
+  <p>Database: {{ database|default:"Not configured" }}</p>
+  <button
+    id="db-ping-btn"
+    class="btn btn-secondary mt-4"
+    hx-get="{% url 'db_ping' %}"
+    hx-target="#db-ping-result"
+    hx-swap="innerHTML"
+    data-swap-error>
+    Ping Database (HTMX GET)
+  </button>
+
+  <div id="db-ping-result" class="mt-2">No database GET Call</div>
 {% endblock %}

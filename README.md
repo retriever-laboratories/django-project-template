@@ -119,6 +119,27 @@ Collect static files:
 uv run python manage.py collectstatic
 ```
 
+## Docker
+
+The `Dockerfile` builds the Django application image. The image expects a
+`DATABASE_URL` environment variable, so production can run the container against
+an external database supplied by your hosting or database provider.
+
+`docker-compose.yml` is intended for local development and internal testing. It
+starts both the Django application and a local PostgreSQL container. The local
+database connection is configured in `.env`:
+
+```env
+DATABASE_URL=postgres://django:django@postgres:5432/django_project
+```
+
+After changing Python dependencies, regenerate the lockfile before building the
+image:
+
+```bash
+uv lock
+```
+
 ## License
 
 MIT License.
