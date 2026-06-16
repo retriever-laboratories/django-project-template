@@ -18,7 +18,10 @@ def home(request):
     return render(
         request,
         "home.html",
-        {"database": settings.DATABASE_URL.split("/")[-1] or "Default (SQLite)", "uri_path": uri_path},
+        {
+            "database": settings.DATABASE_URL.split("/")[-1] or "Default (SQLite)",
+            "uri_path": uri_path,
+        },
     )
 
 
@@ -49,7 +52,6 @@ def db_ping(request):
 
 urlpatterns = [
     path("", home, name="home"),
-    
     # Admin site
     path("admin/", admin.site.urls),
     # Global endpoints
