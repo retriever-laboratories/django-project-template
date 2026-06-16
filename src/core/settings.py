@@ -9,16 +9,18 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+
 from pathlib import Path
+from importlib.util import find_spec
 import os
 
 # ----------------------------
 # Paths
 # ----------------------------
 # This file lives at: src/core/settings.py
-SETTINGS_DIR = Path(__file__).resolve().parent          # .../src/core
-SRC_DIR = SETTINGS_DIR.parent                           # .../src
-BASE_DIR = SRC_DIR.parent                               # project-root
+SETTINGS_DIR = Path(__file__).resolve().parent  # .../src/core
+SRC_DIR = SETTINGS_DIR.parent  # .../src
+BASE_DIR = SRC_DIR.parent  # project-root
 
 # ----------------------------
 # Security & Debug
@@ -30,11 +32,21 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "true").lower() in ("1", "true", "yes")
 
 # Comma-separated list: e.g. "localhost,127.0.0.1,myapp.example.com"
-ALLOWED_HOSTS = [h for h in os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h]
+ALLOWED_HOSTS = [
+    h for h in os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h
+]
 
 # Optional: CSRF Trusted Origins (needed when serving behind a domain with HTTPS)
 # Comma-separated full origins: e.g. "https://myapp.example.com,https://staging.example.com"
-CSRF_TRUSTED_ORIGINS = [o for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o]
+CSRF_TRUSTED_ORIGINS = [
+    o for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o
+]
+USE_X_FORWARDED_HOST = True if os.getenv("LOCAL_DEVELOPMENT", None) else False
+SECURE_PROXY_SSL_HEADER = (
+    ("HTTP_X_FORWARDED_PROTO", "https")
+    if os.getenv("LOCAL_DEVELOPMENT", None)
+    else None
+)
 
 # ----------------------------
 # Applications
@@ -47,24 +59,20 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # Third-party
     "django_htmx",
     "heroicons",
-
     # Internal
-    # add internal apps here
-    "sandbox",  # local table-component testing only, do not promote to PR
+    "core",
 ]
 
 # ----------------------------
 # Middleware
 # ----------------------------
+HAS_WHITENOISE = find_spec("whitenoise") is not None
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # For production, we can add WhiteNoise
-    # "whitenoise.middleware.WhiteNoiseMiddleware",
-
     # Django core
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -72,10 +80,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
     # HTMX helper (adds request.htmx, etc.)
     "django_htmx.middleware.HtmxMiddleware",
 ]
+
+if HAS_WHITENOISE:
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 ROOT_URLCONF = "core.urls"
 
@@ -163,6 +173,19 @@ STATICFILES_DIRS = [
 # Where collectstatic will gather files for production serving
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": (
+            "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            if HAS_WHITENOISE
+            else "django.contrib.staticfiles.storage.StaticFilesStorage"
+        ),
+    },
+}
+
 # Media (user uploads)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -185,14 +208,30 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ----------------------------
 if not DEBUG:
     # Sensible defaults; adjust via env or split later into production settings
-    SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "true").lower() in ("1", "true", "yes")
-    SESSION_COOKIE_SECURE = os.getenv("DJANGO_SESSION_COOKIE_SECURE", "true").lower() in ("1", "true", "yes")
-    CSRF_COOKIE_SECURE = os.getenv("DJANGO_CSRF_COOKIE_SECURE", "true").lower() in ("1", "true", "yes")
-    SECURE_HSTS_SECONDS = int(os.getenv("DJANGO_SECURE_HSTS_SECONDS", "2592000"))  # 30 days
+    SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "true").lower() in (
+        "1",
+        "true",
+        "yes",
+    )
+    SESSION_COOKIE_SECURE = os.getenv(
+        "DJANGO_SESSION_COOKIE_SECURE", "true"
+    ).lower() in ("1", "true", "yes")
+    CSRF_COOKIE_SECURE = os.getenv("DJANGO_CSRF_COOKIE_SECURE", "true").lower() in (
+        "1",
+        "true",
+        "yes",
+    )
+    SECURE_HSTS_SECONDS = int(
+        os.getenv("DJANGO_SECURE_HSTS_SECONDS", "2592000")
+    )  # 30 days
     SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv(
         "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", "true"
     ).lower() in ("1", "true", "yes")
-    SECURE_HSTS_PRELOAD = os.getenv("DJANGO_SECURE_HSTS_PRELOAD", "true").lower() in ("1", "true", "yes")
+    SECURE_HSTS_PRELOAD = os.getenv("DJANGO_SECURE_HSTS_PRELOAD", "true").lower() in (
+        "1",
+        "true",
+        "yes",
+    )
 
 # ----------------------------
 # Logging (minimal, dev-friendly)
@@ -214,4 +253,3 @@ LOGGING = {
 # Additional Settings and Misc
 # ----------------------------
 APPEND_SLASH = True
-

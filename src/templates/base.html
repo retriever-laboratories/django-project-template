@@ -22,7 +22,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body hx-boost="true">
+    <body hx-boost="true" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         <!-- Global toasts / messages container -->
         <div id="toasts" class="toast toast-end toast-top"></div>
 
