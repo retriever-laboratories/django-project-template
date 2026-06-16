@@ -1,6 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include
 from django.http import JsonResponse
+from django.urls import include, path
+
+from core import views
 
 def health(_):
     return JsonResponse({"status": "ok"})
@@ -11,4 +13,5 @@ urlpatterns = [
 
     # Global endpoints
     path("health/", health, name="health"),
+    path("table/", views.table, name="table"),
 ]
