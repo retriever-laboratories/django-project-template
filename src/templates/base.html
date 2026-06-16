@@ -22,9 +22,9 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body hx-boost="true">
+    <body hx-boost="true" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         <!-- Global toasts / messages container -->
-        <div id="toasts" class="toast toast-end toast-top"></div>
+        <div id="toasts" class="toast toast-end toast-top z-50"></div>
 
         <div class="drawer">
             <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />

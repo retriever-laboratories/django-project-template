@@ -1,19 +1,58 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.conf import settings
+from django.db import connection
 from django.http import JsonResponse
-from core import views
+from django.shortcuts import render
+from django.urls import path
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_POST
+
 
 def health(_):
     return JsonResponse({"status": "ok"})
 
+
+@ensure_csrf_cookie
+def home(request):
+    return render(
+        request,
+        "home.html",
+        {"database": settings.DATABASE_URL.split("/")[-1] or "Default (SQLite)"},
+    )
+
+
+@require_POST
+def ping(request):
+    return render(request, "partials/ping_result.html", {"ok": True})
+
+
+def db_ping(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            result = cursor.fetchone()[0]
+    except Exception as exc:
+        return render(
+            request,
+            "partials/db_ping_result.html",
+            {"ok": False, "error": str(exc)},
+            status=500,
+        )
+
+    return render(
+        request,
+        "partials/db_ping_result.html",
+        {"ok": True, "result": result},
+    )
+
+
 urlpatterns = [
-    path("", views.index, name="home"),
-    
-    path("ping/", views.ping, name="ping"),
+    path("", home, name="home"),
     
     # Admin site
     path("admin/", admin.site.urls),
-
     # Global endpoints
     path("health/", health, name="health"),
+    path("db-ping/", db_ping, name="db_ping"),
+    path("ping/", ping, name="ping"),
 ]
