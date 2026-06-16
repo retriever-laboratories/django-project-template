@@ -55,6 +55,8 @@ TABLE_SPEC = {
             "sort": {
                 "enabled": True,
                 "direction": None,
+                "asc_url": "/table/?name=Ada&role=admin&role=editor&sort=id",
+                "desc_url": "/table/?name=Ada&role=admin&role=editor&sort=-id",
             },
         },
         {
@@ -63,6 +65,8 @@ TABLE_SPEC = {
             "sort": {
                 "enabled": True,
                 "direction": "asc",
+                "asc_url": "/table/?name=Ada&role=admin&role=editor",
+                "desc_url": "/table/?name=Ada&role=admin&role=editor&sort=-name",
             },
         },
         {
@@ -71,6 +75,8 @@ TABLE_SPEC = {
             "sort": {
                 "enabled": True,
                 "direction": None,
+                "asc_url": "/table/?name=Ada&role=admin&role=editor&sort=email",
+                "desc_url": "/table/?name=Ada&role=admin&role=editor&sort=-email",
             },
         },
         {
@@ -79,6 +85,8 @@ TABLE_SPEC = {
             "sort": {
                 "enabled": True,
                 "direction": None,
+                "asc_url": "/table/?name=Ada&role=admin&role=editor&sort=role",
+                "desc_url": "/table/?name=Ada&role=admin&role=editor&sort=-role",
             },
         },
         {
