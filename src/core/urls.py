@@ -14,10 +14,11 @@ def health(_):
 
 @ensure_csrf_cookie
 def home(request):
+    uri_path = request.path
     return render(
         request,
         "home.html",
-        {"database": settings.DATABASE_URL.split("/")[-1] or "Default (SQLite)"},
+        {"database": settings.DATABASE_URL.split("/")[-1] or "Default (SQLite)", "uri_path": uri_path},
     )
 
 

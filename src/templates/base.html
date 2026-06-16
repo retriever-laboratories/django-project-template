@@ -29,7 +29,7 @@
         <div class="drawer">
             <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
             <div class="drawer-content">
-                {% include "partials/navbar.html" %}
+                {% include "partials/navbar.html" with uri_path=uri_path %}
                 <main id="main-content">{% block content %}{% endblock %}</main>
             </div>
             
