@@ -1,4 +1,4 @@
-{% load heroicons %}
+{% load static %}
 <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
   {% for filter in filters %}
     {% if filter.badges %}
@@ -8,7 +8,7 @@
           <span class="badge badge-xs gap-1">
             {{ badge.value }}
             <button type="button" class="cursor-pointer" {% if badge.remove_url %}hx-get="{{ badge.remove_url }}"{% endif %} aria-label="Remove {{ badge.value }}">
-              {% heroicon_micro "x-mark" class="size-3" %}
+              <img src="{% static 'icons/x-mark.svg' %}" class="size-3" alt="">
             </button>
           </span>
         {% endfor %}
