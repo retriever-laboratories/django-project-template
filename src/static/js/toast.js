@@ -3,9 +3,11 @@
 //
 // Requirements:
 //  - base.html must have a single global host:
-//      <div id="toasts" class="toast toast-end toast-top" hx-swap-oob="true"></div>
-//  - Each server-rendered toast is a single .alert element with data-ttl (ms) and OOB append:
-//      <div class="alert alert-success" hx-swap-oob="beforeend:#toasts" data-ttl="3000">...</div>
+//      <div id="toasts" class="mt-[72px] toast toast-end toast-top z-50" hx-swap-oob="true"></div>
+//  - Each server-rendered toast is a single .alert element with data-ttl (ms) with a div wrapper for OOB:
+//    <div hx-swap-oob="beforeend:#toasts">
+//      <div class="alert alert-success">...</div>
+//    </div>
 
 (function () {
   function ready(fn) {
