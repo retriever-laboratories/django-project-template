@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third-party
     "django_htmx",
-    "heroicons",
     # Internal
     "core",
 ]
