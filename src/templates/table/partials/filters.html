@@ -1,4 +1,4 @@
-{% load heroicons %}
+{% load static %}
 <div class="flex items-center gap-2">
   <form
     hx-get="{{ filters_base_url }}"
@@ -7,7 +7,7 @@
     :class="{ 'dropdown-open': open }"
     @click.outside="open = false; active = null">
     <button type="button" class="btn btn-sm btn-primary" :aria-expanded="open" @click="open = !open; active = null">
-      {% heroicon_outline "funnel" class="size-4" %}
+      <img src="{% static 'icons/funnel.svg' %}" class="size-4" alt="">
       Filter
     </button>
 
@@ -31,7 +31,7 @@
         <div class="card-body">
           <div class="card-title gap-2">
             <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
-              {% heroicon_micro "arrow-left" class="size-4" %}
+              <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
             </button>
             <span>{{ filter.label }}</span>
           </div>
