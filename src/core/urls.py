@@ -7,7 +7,7 @@ from django.urls import path
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
-from core import views
+from core import views as core_views
 
 
 def health(_):
@@ -61,5 +61,5 @@ urlpatterns = [
     path("db-ping/", db_ping, name="db_ping"),
     path("ping/", ping, name="ping"),
     # Table example
-    path("table/", views.table, name="table"),
+    path("table/", core_views.table, name="table"),
 ]
