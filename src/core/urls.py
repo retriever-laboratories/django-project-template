@@ -1,13 +1,15 @@
 from django.contrib import admin
 from django.conf import settings
+from django.contrib.auth.decorators import login_not_required
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.urls import path
+from django.urls import include, path
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
 
+@login_not_required
 def health(_):
     return JsonResponse({"status": "ok"})
 
@@ -15,12 +17,14 @@ def health(_):
 @ensure_csrf_cookie
 def home(request):
     uri_path = request.path
+    roles = request.session.get("saml_roles", [])
     return render(
         request,
         "home.html",
         {
             "database": settings.DATABASE_URL.split("/")[-1] or "Default (SQLite)",
             "uri_path": uri_path,
+            "roles": roles,
         },
     )
 
@@ -59,3 +63,6 @@ urlpatterns = [
     path("db-ping/", db_ping, name="db_ping"),
     path("ping/", ping, name="ping"),
 ]
+
+if settings.HAS_DJANGOSAML2:
+    urlpatterns.append(path("saml2/", include("djangosaml2.urls")))

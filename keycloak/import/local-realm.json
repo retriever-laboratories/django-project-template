@@ -1,0 +1,130 @@
+{
+  "realm": "local",
+  "displayName": "Local Development",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "resetPasswordAllowed": true,
+  "roles": {
+    "realm": [
+      {
+        "name": "app-admin",
+        "description": "Can administer the local Django app"
+      },
+      {
+        "name": "app-user",
+        "description": "Can use the local Django app"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "django-saml",
+      "name": "Django SAML",
+      "enabled": true,
+      "protocol": "saml",
+      "redirectUris": [
+        "http://localhost:8000/saml2/acs/",
+        "http://127.0.0.1:8000/saml2/acs/",
+        "https://localhost/saml2/acs/"
+      ],
+      "attributes": {
+        "saml.assertion.signature": "false",
+        "saml.authnstatement": "true",
+        "saml.client.signature": "false",
+        "saml.encrypt": "false",
+        "saml.force.post.binding": "true",
+        "saml_single_logout_service_url_post": "https://localhost/saml2/ls/",
+        "saml_single_logout_service_url_redirect": "https://localhost/saml2/ls/",
+        "saml_name_id_format": "persistent",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#"
+      },
+      "protocolMappers": [
+        {
+          "name": "username",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.name": "username",
+            "attribute.nameformat": "Basic",
+            "friendly.name": "username",
+            "user.attribute": "username"
+          }
+        },
+        {
+          "name": "email",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.name": "email",
+            "attribute.nameformat": "Basic",
+            "friendly.name": "email",
+            "user.attribute": "email"
+          }
+        },
+        {
+          "name": "first_name",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.name": "first_name",
+            "attribute.nameformat": "Basic",
+            "friendly.name": "first_name",
+            "user.attribute": "firstName"
+          }
+        },
+        {
+          "name": "last_name",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.name": "last_name",
+            "attribute.nameformat": "Basic",
+            "friendly.name": "last_name",
+            "user.attribute": "lastName"
+          }
+        },
+        {
+          "name": "roles",
+          "protocol": "saml",
+          "protocolMapper": "saml-role-list-mapper",
+          "consentRequired": false,
+          "config": {
+            "attribute.name": "roles",
+            "attribute.nameformat": "Basic",
+            "friendly.name": "roles",
+            "single": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "testuser",
+      "enabled": true,
+      "email": "testuser@example.test",
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "User",
+      "realmRoles": [
+        "app-admin",
+        "app-user"
+      ],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testpassword",
+          "temporary": false
+        }
+      ],
+      "requiredActions": []
+    }
+  ]
+}

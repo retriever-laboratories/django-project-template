@@ -18,6 +18,21 @@
         Click the button to ping
       </div>
     </div>
+  <p>
+    Signed in as {{ request.user.email|default:request.user.username }}.
+    <a href="/saml2/logout/" hx-boost="false">Log out</a>
+  </p>
+
+  <p>
+    Roles:
+    {% if roles %}
+      {% for role in roles %}
+        <span>{{ role }}</span>{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    {% else %}
+      <span>None</span>
+    {% endif %}
+  </p>
 
     <p>Database: {{ database|default:"Not configured" }}</p>
     

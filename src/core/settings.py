@@ -41,16 +41,33 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     o for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o
 ]
-USE_X_FORWARDED_HOST = True if os.getenv("LOCAL_DEVELOPMENT", None) else False
+USE_X_FORWARDED_HOST = os.getenv("DJANGO_USE_X_FORWARDED_HOST", "true").lower() in (
+    "1",
+    "true",
+    "yes",
+)
 SECURE_PROXY_SSL_HEADER = (
     ("HTTP_X_FORWARDED_PROTO", "https")
-    if os.getenv("LOCAL_DEVELOPMENT", None)
+    if os.getenv("DJANGO_SECURE_PROXY_SSL_HEADER", "true").lower()
+    in ("1", "true", "yes")
     else None
+)
+SESSION_COOKIE_SECURE = os.getenv("DJANGO_SESSION_COOKIE_SECURE", "true").lower() in (
+    "1",
+    "true",
+    "yes",
+)
+CSRF_COOKIE_SECURE = os.getenv("DJANGO_CSRF_COOKIE_SECURE", "true").lower() in (
+    "1",
+    "true",
+    "yes",
 )
 
 # ----------------------------
 # Applications
 # ----------------------------
+HAS_DJANGOSAML2 = find_spec("djangosaml2") is not None
+
 INSTALLED_APPS = [
     # Django core
     "django.contrib.admin",
@@ -65,6 +82,9 @@ INSTALLED_APPS = [
     "core",
 ]
 
+if HAS_DJANGOSAML2:
+    INSTALLED_APPS.append("djangosaml2")
+
 # ----------------------------
 # Middleware
 # ----------------------------
@@ -77,6 +97,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "core.middleware.LoginRequiredMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # HTMX helper (adds request.htmx, etc.)
@@ -85,6 +106,12 @@ MIDDLEWARE = [
 
 if HAS_WHITENOISE:
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+if HAS_DJANGOSAML2:
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.contrib.sessions.middleware.SessionMiddleware") + 1,
+        "djangosaml2.middleware.SamlSessionMiddleware",
+    )
 
 ROOT_URLCONF = "core.urls"
 
@@ -201,6 +228,99 @@ USE_TZ = True
 # Auth / Primary Key
 # ----------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+LOGIN_URL = "/saml2/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = LOGIN_URL
+LOGIN_REQUIRED_EXEMPT_URLS = (
+    LOGIN_URL,
+    "/saml2/",
+    "/health/",
+    STATIC_URL,
+    MEDIA_URL,
+)
+
+KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "local")
+KEYCLOAK_SAML_CLIENT_ID = os.getenv("KEYCLOAK_SAML_CLIENT_ID", "django-saml")
+KEYCLOAK_PUBLIC_BASE_URL = os.getenv("KEYCLOAK_PUBLIC_BASE_URL", "http://localhost:8080")
+KEYCLOAK_SAML_IDP_METADATA_URL = os.getenv(
+    "KEYCLOAK_SAML_IDP_METADATA_URL",
+    f"{KEYCLOAK_PUBLIC_BASE_URL.rstrip('/')}/realms/{KEYCLOAK_REALM}/protocol/saml/descriptor",
+)
+
+SAML_SP_ENTITY_ID = os.getenv(
+    "SAML_SP_ENTITY_ID",
+    KEYCLOAK_SAML_CLIENT_ID,
+)
+SAML_SP_ACS_URL = os.getenv(
+    "SAML_SP_ACS_URL",
+    "https://localhost/saml2/acs/",
+)
+SAML_SP_SLO_URL = os.getenv(
+    "SAML_SP_SLO_URL",
+    "https://localhost/saml2/ls/",
+)
+
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
+
+if HAS_DJANGOSAML2:
+    AUTHENTICATION_BACKENDS.insert(0, "core.auth.SamlRoleBackend")
+
+SAML_ATTRIBUTE_MAPPING = {
+    "username": ("username",),
+    "email": ("email",),
+    "first_name": ("first_name",),
+    "last_name": ("last_name",),
+}
+SAML_CREATE_UNKNOWN_USER = True
+SAML_USE_NAME_ID_AS_USERNAME = True
+SAML_SESSION_COOKIE_SAMESITE = os.getenv("SAML_SESSION_COOKIE_SAMESITE", "None")
+SAML_CONFIG = {
+    "xmlsec_binary": os.getenv("SAML_XMLSEC_BINARY", "/usr/bin/xmlsec1"),
+    "entityid": SAML_SP_ENTITY_ID,
+    "allow_unknown_attributes": True,
+    "preferred_binding": {
+        "single_logout_service": [
+            "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+        ],
+    },
+    "metadata": {
+        "remote": [
+            {
+                "url": KEYCLOAK_SAML_IDP_METADATA_URL,
+            }
+        ],
+    },
+    "service": {
+        "sp": {
+            "name": "Django Local",
+            "endpoints": {
+                "assertion_consumer_service": [
+                    (
+                        SAML_SP_ACS_URL,
+                        "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+                    ),
+                ],
+                "single_logout_service": [
+                    (
+                        SAML_SP_SLO_URL,
+                        "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+                    ),
+                    (
+                        SAML_SP_SLO_URL,
+                        "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+                    ),
+                ],
+            },
+            "allow_unsolicited": True,
+            "name_id_format": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+            "authn_requests_signed": False,
+            "logout_requests_signed": False,
+            "want_assertions_signed": False,
+            "want_response_signed": False,
+        },
+    },
+}
 
 # ----------------------------
 # Security toggles for non-DEBUG
@@ -208,14 +328,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 if not DEBUG:
     # Sensible defaults; adjust via env or split later into production settings
     SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "true").lower() in (
-        "1",
-        "true",
-        "yes",
-    )
-    SESSION_COOKIE_SECURE = os.getenv(
-        "DJANGO_SESSION_COOKIE_SECURE", "true"
-    ).lower() in ("1", "true", "yes")
-    CSRF_COOKIE_SECURE = os.getenv("DJANGO_CSRF_COOKIE_SECURE", "true").lower() in (
         "1",
         "true",
         "yes",

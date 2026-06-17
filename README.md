@@ -140,6 +140,67 @@ image:
 uv lock
 ```
 
+### Local Keycloak provider
+
+`docker-compose.yml` also includes a local Keycloak identity provider for
+development. It imports `keycloak/import/local-realm.json` on first startup,
+which creates:
+
+- Realm: `local`
+- SAML client: `django-saml`
+- Test user: `testuser`
+- Test password: `testpassword`
+
+Start the stack:
+
+```bash
+docker compose up keycloak
+```
+
+Open the Keycloak admin console:
+
+```text
+http://localhost:8080
+```
+
+Default admin credentials are configured through `.env`:
+
+```env
+KEYCLOAK_ADMIN=admin
+KEYCLOAK_ADMIN_PASSWORD=admin
+```
+
+SAML IdP metadata URL:
+
+```text
+http://localhost:8080/realms/local/protocol/saml/descriptor
+```
+
+The Django app uses SAML login through `/saml2/login/` and protects views with
+`LoginRequiredMiddleware`. In Docker Compose, Caddy serves the app at
+`https://localhost`. The local service provider entity ID is `django-saml`, and
+the service provider metadata endpoint is:
+
+```text
+https://localhost/saml2/metadata/
+```
+
+For Docker Compose, keep these values in `.env`:
+
+```env
+KEYCLOAK_REALM=local
+KEYCLOAK_SAML_CLIENT_ID=django-saml
+KEYCLOAK_PUBLIC_BASE_URL=http://localhost:8080
+KEYCLOAK_SAML_IDP_METADATA_URL=http://keycloak:8080/realms/local/protocol/saml/descriptor
+SAML_SP_ENTITY_ID=django-saml
+SAML_SP_ACS_URL=https://localhost/saml2/acs/
+SAML_SP_SLO_URL=https://localhost/saml2/ls/
+SAML_XMLSEC_BINARY=/usr/bin/xmlsec1
+```
+
+`xmlsec1` is installed inside the Django Docker image; it does not need to be
+installed on the host machine.
+
 ## License
 
 MIT License.
