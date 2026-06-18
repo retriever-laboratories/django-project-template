@@ -20,7 +20,7 @@ services:
       postgres:
         condition: service_healthy
       keycloak:
-        condition: service_started
+        condition: service_healthy
 
     command: >
       sh -c "
@@ -90,10 +90,10 @@ services:
     restart: unless-stopped
 
     environment:
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
       KC_HTTP_ENABLED: "true"
-      KC_HOSTNAME: ${KEYCLOAK_PUBLIC_BASE_URL:-http://localhost:8080}
+      KC_HOSTNAME: http://localhost:8080
       KC_HOSTNAME_STRICT: "false"
 
     command:
@@ -101,7 +101,18 @@ services:
       - --import-realm
 
     ports:
-      - "${KEYCLOAK_PORT:-8080}:8080"
+      - "8080:8080"
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "bash -ec 'exec 3<>/dev/tcp/localhost/8080; printf \"GET /realms/local/protocol/saml/descriptor HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n\" >&3; grep -q \"200 OK\" <&3'",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
 
     volumes:
       - keycloak_data:/opt/keycloak/data

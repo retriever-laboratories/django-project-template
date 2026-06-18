@@ -239,26 +239,13 @@ LOGIN_REQUIRED_EXEMPT_URLS = (
     MEDIA_URL,
 )
 
-KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "local")
-KEYCLOAK_SAML_CLIENT_ID = os.getenv("KEYCLOAK_SAML_CLIENT_ID", "django-saml")
-KEYCLOAK_PUBLIC_BASE_URL = os.getenv("KEYCLOAK_PUBLIC_BASE_URL", "http://localhost:8080")
-KEYCLOAK_SAML_IDP_METADATA_URL = os.getenv(
-    "KEYCLOAK_SAML_IDP_METADATA_URL",
-    f"{KEYCLOAK_PUBLIC_BASE_URL.rstrip('/')}/realms/{KEYCLOAK_REALM}/protocol/saml/descriptor",
+SAML_IDP_METADATA_URL = os.getenv(
+    "SAML_IDP_METADATA_URL",
+    "http://keycloak:8080/realms/local/protocol/saml/descriptor",
 )
-
-SAML_SP_ENTITY_ID = os.getenv(
-    "SAML_SP_ENTITY_ID",
-    KEYCLOAK_SAML_CLIENT_ID,
-)
-SAML_SP_ACS_URL = os.getenv(
-    "SAML_SP_ACS_URL",
-    "https://localhost/saml2/acs/",
-)
-SAML_SP_SLO_URL = os.getenv(
-    "SAML_SP_SLO_URL",
-    "https://localhost/saml2/ls/",
-)
+SAML_SP_ENTITY_ID = os.getenv("SAML_SP_ENTITY_ID", "django-saml")
+SAML_SP_ACS_URL = os.getenv("SAML_SP_ACS_URL", "https://localhost/saml2/acs/")
+SAML_SP_SLO_URL = os.getenv("SAML_SP_SLO_URL", "https://localhost/saml2/ls/")
 
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 
@@ -287,7 +274,7 @@ SAML_CONFIG = {
     "metadata": {
         "remote": [
             {
-                "url": KEYCLOAK_SAML_IDP_METADATA_URL,
+                "url": SAML_IDP_METADATA_URL,
             }
         ],
     },

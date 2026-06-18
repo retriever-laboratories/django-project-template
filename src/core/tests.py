@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
+from django.conf import settings
 
 
 TEST_STORAGES = {
@@ -19,6 +20,13 @@ class HealthTests(SimpleTestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"status": "ok"})
+
+
+class SamlSettingsTests(SimpleTestCase):
+    def test_idp_metadata_uses_generic_saml_setting(self):
+        remote_metadata = settings.SAML_CONFIG["metadata"]["remote"]
+
+        self.assertEqual(remote_metadata[0]["url"], settings.SAML_IDP_METADATA_URL)
 
 
 @override_settings(STORAGES=TEST_STORAGES)
