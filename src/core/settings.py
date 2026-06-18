@@ -243,9 +243,10 @@ SAML_IDP_METADATA_URL = os.getenv(
     "SAML_IDP_METADATA_URL",
     "http://keycloak:8080/realms/local/protocol/saml/descriptor",
 )
+APP_BASE_URL = os.getenv("APP_BASE_URL", "https://localhost").rstrip("/")
 SAML_SP_ENTITY_ID = os.getenv("SAML_SP_ENTITY_ID", "django-saml")
-SAML_SP_ACS_URL = os.getenv("SAML_SP_ACS_URL", "https://localhost/saml2/acs/")
-SAML_SP_SLO_URL = os.getenv("SAML_SP_SLO_URL", "https://localhost/saml2/ls/")
+SAML_SP_ACS_URL = f"{APP_BASE_URL}/saml2/acs/"
+SAML_SP_SLO_URL = f"{APP_BASE_URL}/saml2/ls/"
 
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 
@@ -262,7 +263,7 @@ SAML_CREATE_UNKNOWN_USER = True
 SAML_USE_NAME_ID_AS_USERNAME = True
 SAML_SESSION_COOKIE_SAMESITE = os.getenv("SAML_SESSION_COOKIE_SAMESITE", "None")
 SAML_CONFIG = {
-    "xmlsec_binary": os.getenv("SAML_XMLSEC_BINARY", "/usr/bin/xmlsec1"),
+    "xmlsec_binary": "/usr/bin/xmlsec1",
     "entityid": SAML_SP_ENTITY_ID,
     "allow_unknown_attributes": True,
     "preferred_binding": {
@@ -300,7 +301,7 @@ SAML_CONFIG = {
                 ],
             },
             "allow_unsolicited": True,
-            "name_id_format": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+            "name_id_format": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
             "authn_requests_signed": False,
             "logout_requests_signed": False,
             "want_assertions_signed": False,

@@ -144,8 +144,9 @@ uv lock
 
 The Django app is configured as a generic SAML service provider. Projects built
 from this template should point the app at their external identity provider by
-setting `SAML_IDP_METADATA_URL` and the service provider URLs for the deployed
-domain.
+setting `SAML_IDP_METADATA_URL` and the public application URL in
+`APP_BASE_URL`. The service provider SAML URLs are derived from
+`APP_BASE_URL`.
 
 `docker-compose.yml` includes Keycloak only as a local development identity
 provider. Its local-only configuration is hardcoded in Compose and in
@@ -186,27 +187,37 @@ the service provider metadata endpoint is:
 https://localhost/saml2/metadata/
 ```
 
-For Docker Compose local development, keep these SAML values in `.env`:
+For Docker Compose local development, keep these values in `.env`:
 
 ```env
+APP_BASE_URL=https://localhost
 SAML_IDP_METADATA_URL=http://keycloak:8080/realms/local/protocol/saml/descriptor
 SAML_SP_ENTITY_ID=django-saml
-SAML_SP_ACS_URL=https://localhost/saml2/acs/
-SAML_SP_SLO_URL=https://localhost/saml2/ls/
-SAML_XMLSEC_BINARY=/usr/bin/xmlsec1
+SAML_SESSION_COOKIE_SAMESITE=None
 ```
 
 `xmlsec1` is installed inside the Django Docker image; it does not need to be
 installed on the host machine.
 
-For production or shared environments, replace only the generic SAML settings:
+For production or shared environments, replace the app URL and external IdP
+metadata URL:
 
 ```env
+APP_BASE_URL=https://app.example.com
 SAML_IDP_METADATA_URL=https://idp.example.com/metadata
-SAML_SP_ENTITY_ID=https://app.example.com/saml2/metadata/
-SAML_SP_ACS_URL=https://app.example.com/saml2/acs/
-SAML_SP_SLO_URL=https://app.example.com/saml2/ls/
+SAML_SP_ENTITY_ID=django-saml
 ```
+
+For Okta-style SAML applications, map the fields this way:
+
+- Entity ID: `SAML_SP_ENTITY_ID`
+- Single sign-on URL, Recipient, and Destination: `{APP_BASE_URL}/saml2/acs/`
+- Default RelayState: blank unless the app has a specific landing path
+- Name ID format: `Unspecified`
+- Application username: usually Okta username or email, depending on the user key
+
+The service provider always requests the `unspecified` NameID format because
+that is the enterprise SAML convention this template targets.
 
 ## License
 

@@ -36,7 +36,7 @@
         "saml.force.post.binding": "true",
         "saml_single_logout_service_url_post": "https://localhost/saml2/ls/",
         "saml_single_logout_service_url_redirect": "https://localhost/saml2/ls/",
-        "saml_name_id_format": "persistent",
+        "saml_name_id_format": "unspecified",
         "saml.server.signature": "false",
         "saml.server.signature.keyinfo.ext": "false",
         "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#"

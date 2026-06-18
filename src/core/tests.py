@@ -28,6 +28,32 @@ class SamlSettingsTests(SimpleTestCase):
 
         self.assertEqual(remote_metadata[0]["url"], settings.SAML_IDP_METADATA_URL)
 
+    def test_service_provider_urls_are_derived_from_app_base_url(self):
+        sp_config = settings.SAML_CONFIG["service"]["sp"]
+
+        self.assertEqual(
+            sp_config["endpoints"]["assertion_consumer_service"][0][0],
+            f"{settings.APP_BASE_URL}/saml2/acs/",
+        )
+        self.assertEqual(
+            sp_config["endpoints"]["single_logout_service"][0][0],
+            f"{settings.APP_BASE_URL}/saml2/ls/",
+        )
+
+    def test_service_provider_entity_id_uses_generic_saml_setting(self):
+        self.assertEqual(settings.SAML_CONFIG["entityid"], settings.SAML_SP_ENTITY_ID)
+
+    def test_name_id_format_is_unspecified(self):
+        sp_config = settings.SAML_CONFIG["service"]["sp"]
+
+        self.assertEqual(
+            sp_config["name_id_format"],
+            "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+        )
+
+    def test_xmlsec_binary_uses_container_path(self):
+        self.assertEqual(settings.SAML_CONFIG["xmlsec_binary"], "/usr/bin/xmlsec1")
+
 
 @override_settings(STORAGES=TEST_STORAGES)
 class LoginRequiredMiddlewareTests(TestCase):
