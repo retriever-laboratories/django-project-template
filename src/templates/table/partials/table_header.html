@@ -5,7 +5,7 @@
       <th scope="col" class="z-[2]">
         {% if column.sortable %}
           {% sort_direction request column.field as direction %}
-          {% include "table/partials/sort.html" with label=model|verbose_name:column.field direction=direction %}
+          {% include "table/partials/sort.html" with direction=direction field=column.field %}
         {% else %}
           {{ model|verbose_name:column.field }}
         {% endif %}
