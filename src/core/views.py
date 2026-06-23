@@ -104,7 +104,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "id",
                     "value": "01",
-                    "render": "components/link.html",
+                    "render": "partials/link.html",
                     "class": "link-primary",
                     "props": {"href": "#"},
                 },
@@ -114,7 +114,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "status",
                     "value": "Active",
-                    "render": "components/badge.html",
+                    "render": "partials/badge.html",
                     "class": "badge-success",
                 },
             ],
@@ -125,7 +125,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "id",
                     "value": "02",
-                    "render": "components/link.html",
+                    "render": "partials/link.html",
                     "class": "link-primary",
                     "props": {"href": "#"},
                 },
@@ -135,7 +135,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "status",
                     "value": "Active",
-                    "render": "components/badge.html",
+                    "render": "partials/badge.html",
                     "class": "badge-success",
                 },
             ],
@@ -146,7 +146,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "id",
                     "value": "03",
-                    "render": "components/link.html",
+                    "render": "partials/link.html",
                     "class": "link-primary",
                     "props": {"href": "#"},
                 },
@@ -156,7 +156,7 @@ TABLE_SPEC = {
                 {
                     "accessor": "status",
                     "value": "Invited",
-                    "render": "components/badge.html",
+                    "render": "partials/badge.html",
                     "class": "badge-warning",
                 },
             ],
@@ -168,8 +168,8 @@ TABLE_SPEC = {
         {"size": 100, "url": "?page_size=100"},
     ],
     "actions": {
-        "top_right": "components/download_button.html",
-        "bottom_right": "components/add_button.html",
+        "top_right": "partials/download_button.html",
+        "bottom_right": "partials/add_button.html",
     },
     "pagination": {
         "number": 1,
@@ -181,6 +181,111 @@ TABLE_SPEC = {
             "per_page": 3,
         },
     },
+}
+
+
+#   class PersonFilterForm(forms.Form):
+#       name = forms.CharField(required=False)
+#       role = forms.MultipleChoiceField(
+#           required=False,
+#           choices=Person.Role.choices,
+#           widget=forms.CheckboxSelectMultiple,
+#       )
+#       status = forms.MultipleChoiceField(
+#           required=False,
+#           choices=Person.Status.choices,
+#           widget=forms.CheckboxSelectMultiple,
+#       )
+
+#   Then in the view:
+
+#   filter_form = PersonFilterForm(request.GET)
+
+#   context = {
+#       
+#       "table": {
+#           "columns": [....],
+#       },
+#       "filter_form": filter_form,
+#       "page_obj": page_obj,
+#   }
+
+context = {
+    "model": "User",
+    "table": {
+        "columns": [
+            {
+                "field": "name",
+                "sortable": True,
+                "render": "partials/link.html",
+            },
+            {
+                "field": "email",
+                "sortable": True,
+            },
+            {
+                "field": "role",
+                "sortable": True,
+            },
+            {
+                "field": "status",
+                "sortable": False,
+            },
+        ],
+        "actions": {
+            "top_right": "partials/download_button.html",
+            "bottom_right": "partials/add_button.html",
+        },
+    },
+    "request": {},  # From here we can get the current filter and sort already added to the query
+    "page_size_options": [
+        {"size": 10, "url": "?page_size=10"},
+        {"size": 50, "url": "?page_size=50"},
+        {"size": 100, "url": "?page_size=100"},
+    ],
+    "page_obj": {  # From here we could get the current page of results, and the pagination info
+        "number": 1,
+        "has_previous": False,
+        "has_next": True,
+        "previous_page_number": None,
+        "next_page_number": 2,
+        "start_index": 1,
+        "end_index": 3,
+        "paginator": {
+            "count": 5,
+            "num_pages": 2,
+            "per_page": 3,
+        },
+    },
+    "object_list": [
+            #   User(id=1, name="Ada Lovelace"),
+            #   User(id=2, name="Alan Turing"),
+            #   User(id=3, name="Grace Hopper"),
+        ],
+    "filters": [  # object to render the filter menu, created by the meta model
+        {
+            "accessor": "name",
+            "type": "text",
+        },
+        {
+            "accessor": "role",
+            "type": "select",
+            "options": [
+                {"value": "admin", "label": "Admin"},
+                {"value": "editor", "label": "Editor"},
+                {"value": "viewer", "label": "Viewer"},
+            ],
+        },
+        {
+            "accessor": "status",
+            "type": "select",
+            "options": [
+                {"value": "active", "label": "Active"},
+                {"value": "invited", "label": "Invited"},
+                {"value": "disabled", "label": "Disabled"},
+            ],
+        },
+    ],
 }
 
 

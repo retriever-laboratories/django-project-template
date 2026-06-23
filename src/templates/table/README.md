@@ -40,7 +40,7 @@ The spec should already contain the final UI state: columns, rows, filters, sort
         {
           "accessor": "status",
           "value": "Active",
-          "render": "components/badge.html",
+          "render": "partials/badge.html",
           "class": "badge-success"
         }
       ]
@@ -110,7 +110,7 @@ Use `render` when the value needs a reusable presentation, such as a link, badge
 {
   "accessor": "status",
   "value": "Active",
-  "render": "components/badge.html",
+  "render": "partials/badge.html",
   "class": "badge-success"
 }
 ```
@@ -121,7 +121,7 @@ For a link cell, pass extra data through `props`:
 {
   "accessor": "id",
   "value": "01",
-  "render": "components/link.html",
+  "render": "partials/link.html",
   "class": "link-primary",
   "props": {
     "href": "/users/1/"
@@ -220,8 +220,8 @@ Each option needs:
 
 ```json
 {
-  "top_right": "components/download_button.html",
-  "bottom_right": "components/add_button.html"
+  "top_right": "partials/download_button.html",
+  "bottom_right": "partials/add_button.html"
 }
 ```
 

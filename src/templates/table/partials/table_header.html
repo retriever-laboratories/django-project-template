@@ -1,13 +1,9 @@
 <thead>
   <tr>
-    {% for column in table.columns %}
-      <th scope="col" class="z-[2]">
-        {% if column.sort.enabled %}
-          {% include "table/partials/sort.html" with column=column only %}
-        {% else %}
-          {{ column.label }}
-        {% endif %}
-      </th>
-    {% endfor %}
+    <th scope="col" class="z-[2]">{% include "table/partials/sort.html" with label="Id" only %}</th>
+    <th scope="col" class="z-[2]">{% include "table/partials/sort.html" with label="Name" direction="asc" only %}</th>
+    <th scope="col" class="z-[2]">{% include "table/partials/sort.html" with label="Email" only %}</th>
+    <th scope="col" class="z-[2]">{% include "table/partials/sort.html" with label="Role" only %}</th>
+    <th scope="col" class="z-[2]">Status</th>
   </tr>
 </thead>

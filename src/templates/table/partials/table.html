@@ -1,24 +1,24 @@
 <div
-  id="table-{{ table.id }}"
+  id="table-users"
   class="flex flex-col gap-8"
-  hx-target="#table-{{ table.id }}"
+  hx-target="#table-users"
   hx-swap="outerHTML"
   hx-push-url="true">
 
-  {% include "table/partials/table_top.html" with table=table only %}
+  {% include "table/partials/table_top.html" only %}
 
   <div class="overflow-auto max-h-[385px]">
-    <table id="{{ table.id }}" class="table table-sm w-full table-pin-rows">
-      {% include "table/partials/table_header.html" with table=table only %}
-      {% include "table/partials/table_rows.html" with table=table only %}
+    <table id="users" class="table table-sm w-full table-pin-rows">
+      {% include "table/partials/table_header.html" only %}
+      <tbody>
+        {% include "table/partials/table_row.html" with row_id=1 id_label="01" name="Ada Lovelace" email="ada@example.com" role="Admin" status="Active" status_class="badge-success" only %}
+        {% include "table/partials/table_row.html" with row_id=2 id_label="02" name="Alan Turing" email="alan@example.com" role="Editor" status="Active" status_class="badge-success" only %}
+        {% include "table/partials/table_row.html" with row_id=3 id_label="03" name="Grace Hopper" email="grace@example.com" role="Editor" status="Invited" status_class="badge-warning" only %}
+      </tbody>
     </table>
   </div>
 
-  {% if table.pagination %}
-    {% include "table/partials/pagination.html" with pagination=table.pagination page_size_options=table.page_size_options only %}
-  {% endif %}
+  {% include "table/partials/pagination.html" only %}
 
-  {% if table.actions.bottom_left or table.actions.bottom_right %}
-    {% include "table/partials/table_bottom.html" with table=table only %}
-  {% endif %}
+  {% include "table/partials/table_bottom.html" only %}
 </div>

@@ -1,13 +1,7 @@
 <div class="flex items-center justify-between gap-2">
-  <div class="flex flex-wrap items-center gap-2">
-    {% if table.actions.bottom_left %}
-      {% include table.actions.bottom_left with table=table only %}
-    {% endif %}
-  </div>
+  <div class="flex flex-wrap items-center gap-2"></div>
 
   <div class="flex items-center gap-2">
-    {% if table.actions.bottom_right %}
-      {% include table.actions.bottom_right with table=table only %}
-    {% endif %}
+    {% include "partials/add_button.html" only %}
   </div>
 </div>
