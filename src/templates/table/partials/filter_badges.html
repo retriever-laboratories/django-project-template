@@ -1,7 +1,7 @@
 {% load static utils %}
-{% filter_params request as applied_filters %}
+{% group_params request as query %}
 <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-  {% for key, values in applied_filters %}
+  {% for key, values in query.filters %}
     <div class="flex items-center gap-0.5 rounded-box bg-base-200 px-1 py-0.5">
       <span class="badge badge-xs badge-primary badge-soft">{{ model|verbose_name:key }}</span>
       {% for value in values %}
