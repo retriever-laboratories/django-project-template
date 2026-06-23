@@ -1,4 +1,4 @@
-{% load static %}
+{% load static utils %}
 <div
   class="dropdown dropdown-bottom dropdown-start"
   x-data="{
@@ -7,7 +7,7 @@
   :class="{ 'dropdown-open': open }"
   @click.outside="open = false">
   <button type="button" class="flex cursor-pointer items-center gap-1" :aria-expanded="open" @click="open = !open">
-    {{ label }}
+    {{ model|verbose_name:field }}
     {% if direction == "asc" %}
       <img src="{% static 'icons/arrow-down.svg' %}" class="size-4" alt="">
     {% elif direction == "desc" %}
@@ -22,17 +22,19 @@
     x-show="open"
     style="display: none">
     <li class="menu-title">Sort by</li>
+    {% sort_url request field "asc" as asc_url %}
+    {% sort_url request field "desc" as desc_url %}
     <li>
-      <button type="button" {% if direction == "asc" %}class="font-semibold"{% endif %}>
+      <a href="{{ asc_url }}" hx-get="{{ asc_url }}" {% if direction == "asc" %}class="font-semibold"{% endif %}>
         <img src="{% static 'icons/arrow-down.svg' %}" class="size-4" alt="">
         Ascending
-      </button>
+      </a>
     </li>
     <li>
-      <button type="button" {% if direction == "desc" %}class="font-semibold"{% endif %}>
+      <a href="{{ desc_url }}" hx-get="{{ desc_url }}" {% if direction == "desc" %}class="font-semibold"{% endif %}>
         <img src="{% static 'icons/arrow-up.svg' %}" class="size-4" alt="">
         Descending
-      </button>
+      </a>
     </li>
   </ul>
 </div>
