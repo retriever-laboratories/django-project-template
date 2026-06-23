@@ -3,6 +3,31 @@ from django.utils.text import capfirst
 
 register = template.Library()
 
+PAGE_PARAMS = {"page", "o", "page_size"}
+
+
+@register.simple_tag
+def filter_params(request):
+    return [
+        (key, values)
+        for key, values in request.GET.lists()
+        if key not in PAGE_PARAMS
+    ]
+
+
+@register.simple_tag
+def clear_filters_url(request):
+    applied_filters = filter_params(request)
+    if not applied_filters:
+        return None
+
+    params = request.GET.copy()
+    for field, _ in applied_filters:
+        del params[field]
+
+    query = params.urlencode()
+    return f"{request.path}?{query}" if query else request.path
+
 
 @register.filter(name="getattr")
 def get_field(obj, field_name):
@@ -48,9 +73,13 @@ def sort_url(request, field_name, direction):
 
 
 @register.simple_tag
-def page_url(request, page_number):
+def pagination_url(request, **updates):
     params = request.GET.copy()
-    params["page"] = page_number
+    for key, value in updates.items():
+        if value is None:
+            params.pop(key, None)
+        else:
+            params[key] = value
     return f"{request.path}?{params.urlencode()}"
 
 
