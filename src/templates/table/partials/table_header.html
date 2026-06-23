@@ -1,9 +1,11 @@
+{% load utils %}
 <thead>
   <tr>
     {% for column in table.columns %}
       <th scope="col" class="z-[2]">
         {% if column.sortable %}
-          {% include "table/partials/sort.html" with label=column.field %}
+          {% sort_direction request column.field as direction %}
+          {% include "table/partials/sort.html" with label=column.field direction=direction %}
         {% else %}
           {{ column.field }}
         {% endif %}
