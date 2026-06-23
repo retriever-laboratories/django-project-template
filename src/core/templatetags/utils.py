@@ -27,3 +27,12 @@ def sort_direction(request, field_name):
         if token == f"-{field_name}":
             return "desc"
     return None
+
+
+@register.simple_tag
+def remove_filter_url(request, key, value):
+    params = request.GET.copy()
+    params.setlist(key, [item for item in params.getlist(key) if item != value])
+
+    query = params.urlencode()
+    return f"{request.path}?{query}" if query else request.path
