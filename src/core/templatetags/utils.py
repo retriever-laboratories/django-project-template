@@ -1,4 +1,5 @@
 from django import template
+from django.utils.text import capfirst
 
 register = template.Library()
 
@@ -11,6 +12,11 @@ def get_field(obj, field_name):
 @register.filter
 def getlist(querydict, key):
     return querydict.getlist(key)
+
+
+@register.filter
+def verbose_name(model, field_name):
+    return capfirst(model._meta.get_field(field_name).verbose_name)
 
 
 @register.simple_tag
