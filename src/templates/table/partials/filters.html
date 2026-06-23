@@ -1,7 +1,6 @@
 {% load static %}
 <div class="flex items-center gap-2">
   <form
-    hx-get="{{ filters_base_url }}"
     class="dropdown dropdown-bottom"
     x-data="{ open: false, active: null }"
     :class="{ 'dropdown-open': open }"
@@ -16,31 +15,60 @@
       x-show="open && !active"
       style="display: none">
       <li class="menu-title">Filter by</li>
-      {% for filter in filters %}
-        <li>
-          <button type="button" @click="active = '{{ filter.accessor }}'">{{ filter.label }}</button>
-        </li>
-      {% endfor %}
+      <li><button type="button" @click="active = 'name'">Name</button></li>
+      <li><button type="button" @click="active = 'email'">Email</button></li>
+      <li><button type="button" @click="active = 'role'">Role</button></li>
+      <li><button type="button" @click="active = 'status'">Status</button></li>
     </ul>
 
-    {% for filter in filters %}
-      <div
-        class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm"
-        x-show="open && active === '{{ filter.accessor }}'"
-        style="display: none">
-        <div class="card-body">
-          <div class="card-title gap-2">
-            <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
-              <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
-            </button>
-            <span>{{ filter.label }}</span>
-          </div>
-
-          {% include "table/filters/"|add:filter.type|add:".html" with filter=filter only %}
+    <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === 'name'" style="display: none">
+      <div class="card-body">
+        <div class="card-title gap-2">
+          <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
+            <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
+          </button>
+          <span>Name</span>
         </div>
+        {% include "table/filters/text.html" only %}
       </div>
-    {% endfor %}
+    </div>
+
+    <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === 'email'" style="display: none">
+      <div class="card-body">
+        <div class="card-title gap-2">
+          <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
+            <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
+          </button>
+          <span>Email</span>
+        </div>
+        {% include "table/filters/text.html" only %}
+      </div>
+    </div>
+
+    <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === 'role'" style="display: none">
+      <div class="card-body">
+        <div class="card-title gap-2">
+          <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
+            <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
+          </button>
+          <span>Role</span>
+        </div>
+        {% include "table/filters/select.html" only %}
+      </div>
+    </div>
+
+    <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === 'status'" style="display: none">
+      <div class="card-body">
+        <div class="card-title gap-2">
+          <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
+            <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
+          </button>
+          <span>Status</span>
+        </div>
+        {% include "table/filters/select.html" only %}
+      </div>
+    </div>
   </form>
 
-  <button type="button" class="btn btn-sm" {% if filters_base_url %}hx-get="{{ filters_base_url }}"{% endif %} {% if not filters_applied %}disabled{% endif %}>Clear all</button>
+  <button type="button" class="btn btn-sm">Clear all</button>
 </div>

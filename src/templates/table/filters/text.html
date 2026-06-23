@@ -2,7 +2,7 @@
 <div
   class="flex flex-col gap-2"
   x-data="{
-    values: [{% for value in filter.values %}'{{ value|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+    values: [],
     input: '',
     add() { const value = this.input.trim(); if (value) { this.values.push(value); this.input = '' } },
   }">
@@ -17,7 +17,7 @@
   </div>
 
   <template x-for="(value, index) in values" :key="'input-' + index">
-    <input type="hidden" name="{{ filter.accessor }}" :value="value"/>
+    <input type="hidden" name="value" :value="value"/>
   </template>
 
   <div class="flex flex-col items-start gap-2 pt-2" x-show="values.length">
