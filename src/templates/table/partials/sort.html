@@ -5,10 +5,10 @@
   :class="{ 'dropdown-open': open }"
   @click.outside="open = false">
   <button type="button" class="flex cursor-pointer items-center gap-1" :aria-expanded="open" @click="open = !open">
-    {{ column.label }}
-    {% if column.sort.direction == "asc" %}
+    {{ label }}
+    {% if direction == "asc" %}
       <img src="{% static 'icons/arrow-down.svg' %}" class="size-4" alt="">
-    {% elif column.sort.direction == "desc" %}
+    {% elif direction == "desc" %}
       <img src="{% static 'icons/arrow-up.svg' %}" class="size-4" alt="">
     {% else %}
       <img src="{% static 'icons/chevron-up-down.svg' %}" class="size-4 text-base-content/30" alt="">
@@ -21,13 +21,13 @@
     style="display: none">
     <li class="menu-title">Sort by</li>
     <li>
-      <button type="button" {% if column.sort.asc_url %}hx-get="{{ column.sort.asc_url }}"{% endif %} {% if column.sort.direction == "asc" %}class="font-semibold"{% endif %}>
+      <button type="button" {% if direction == "asc" %}class="font-semibold"{% endif %}>
         <img src="{% static 'icons/arrow-down.svg' %}" class="size-4" alt="">
         Ascending
       </button>
     </li>
     <li>
-      <button type="button" {% if column.sort.desc_url %}hx-get="{{ column.sort.desc_url }}"{% endif %} {% if column.sort.direction == "desc" %}class="font-semibold"{% endif %}>
+      <button type="button" {% if direction == "desc" %}class="font-semibold"{% endif %}>
         <img src="{% static 'icons/arrow-up.svg' %}" class="size-4" alt="">
         Descending
       </button>

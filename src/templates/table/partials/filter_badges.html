@@ -1,18 +1,28 @@
 {% load static %}
 <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-  {% for filter in filters %}
-    {% if filter.badges %}
-      <div class="flex items-center gap-0.5 rounded-box bg-base-200 px-1 py-0.5">
-        <span class="badge badge-xs badge-primary badge-soft">{{ filter.label }}</span>
-        {% for badge in filter.badges %}
-          <span class="badge badge-xs gap-1">
-            {{ badge.value }}
-            <button type="button" class="cursor-pointer" {% if badge.remove_url %}hx-get="{{ badge.remove_url }}"{% endif %} aria-label="Remove {{ badge.value }}">
-              <img src="{% static 'icons/x-mark.svg' %}" class="size-3" alt="">
-            </button>
-          </span>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endfor %}
+  <div class="flex items-center gap-0.5 rounded-box bg-base-200 px-1 py-0.5">
+    <span class="badge badge-xs badge-primary badge-soft">Name</span>
+    <span class="badge badge-xs gap-1">
+      Ada
+      <button type="button" class="cursor-pointer" aria-label="Remove Ada">
+        <img src="{% static 'icons/x-mark.svg' %}" class="size-3" alt="">
+      </button>
+    </span>
+  </div>
+
+  <div class="flex items-center gap-0.5 rounded-box bg-base-200 px-1 py-0.5">
+    <span class="badge badge-xs badge-primary badge-soft">Role</span>
+    <span class="badge badge-xs gap-1">
+      Admin
+      <button type="button" class="cursor-pointer" aria-label="Remove Admin">
+        <img src="{% static 'icons/x-mark.svg' %}" class="size-3" alt="">
+      </button>
+    </span>
+    <span class="badge badge-xs gap-1">
+      Editor
+      <button type="button" class="cursor-pointer" aria-label="Remove Editor">
+        <img src="{% static 'icons/x-mark.svg' %}" class="size-3" alt="">
+      </button>
+    </span>
+  </div>
 </div>

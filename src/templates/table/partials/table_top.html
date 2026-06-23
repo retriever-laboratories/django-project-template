@@ -1,17 +1,10 @@
 <div class="flex items-start justify-between gap-2">
   <div class="flex flex-wrap items-start gap-2">
-    {% if table.filters %}
-      {% include "table/partials/filters.html" with filters=table.filters filters_applied=table.filters_applied filters_base_url=table.filters_base_url only %}
-    {% endif %}
-
-    {% if table.filters_applied %}
-      {% include "table/partials/filter_badges.html" with filters=table.filters only %}
-    {% endif %}
+    {% include "table/partials/filters.html" only %}
+    {% include "table/partials/filter_badges.html" only %}
   </div>
 
   <div class="flex items-center gap-2">
-    {% if table.actions.top_right %}
-      {% include table.actions.top_right with table=table only %}
-    {% endif %}
+    {% include "partials/download_button.html" only %}
   </div>
 </div>
