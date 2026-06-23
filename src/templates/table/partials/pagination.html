@@ -7,7 +7,7 @@
       type="button"
       class="join-item btn btn-xs w-[26px]"
       {% if page_obj.has_previous %}
-        hx-get="{% page_url request page_obj.previous_page_number %}"
+        hx-get="{% pagination_url request page=page_obj.previous_page_number %}"
       {% else %}
         disabled
       {% endif %}
@@ -16,7 +16,7 @@
       type="button"
       class="join-item btn btn-xs w-[26px]"
       {% if page_obj.has_next %}
-        hx-get="{% page_url request page_obj.next_page_number %}"
+        hx-get="{% pagination_url request page=page_obj.next_page_number %}"
       {% else %}
         disabled
       {% endif %}
@@ -40,8 +40,8 @@
       class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs"
       x-show="open"
       style="display: none">
-      {% for option in page_size_options %}
-        <li><button type="button">{{ option.size }}</button></li>
+      {% for size in page_size_options %}
+        <li><button type="button" hx-get="{% pagination_url request page_size=size page=None %}">{{ size }}</button></li>
       {% endfor %}
     </ul>
   </div>
