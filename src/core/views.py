@@ -1,3 +1,5 @@
+from types import SimpleNamespace
+
 from django.shortcuts import render
 
 
@@ -202,7 +204,7 @@ TABLE_SPEC = {
 #   filter_form = PersonFilterForm(request.GET)
 
 #   context = {
-#       
+#
 #       "table": {
 #           "columns": [....],
 #       },
@@ -215,9 +217,14 @@ context = {
     "table": {
         "columns": [
             {
+                "field": "id",
+                "sortable": True,
+                "partial": "partials/link.html",
+                "class": "link-primary",
+            },
+            {
                 "field": "name",
                 "sortable": True,
-                "render": "partials/link.html",
             },
             {
                 "field": "email",
@@ -258,10 +265,28 @@ context = {
         },
     },
     "object_list": [
-            #   User(id=1, name="Ada Lovelace"),
-            #   User(id=2, name="Alan Turing"),
-            #   User(id=3, name="Grace Hopper"),
-        ],
+        SimpleNamespace(
+            id="01",
+            name="Ada Lovelace",
+            email="ada@example.com",
+            role="Admin",
+            status="Active",
+        ),
+        SimpleNamespace(
+            id="02",
+            name="Alan Turing",
+            email="alan@example.com",
+            role="Editor",
+            status="Active",
+        ),
+        SimpleNamespace(
+            id="03",
+            name="Grace Hopper",
+            email="grace@example.com",
+            role="Editor",
+            status="Invited",
+        ),
+    ],
     "filters": [  # object to render the filter menu, created by the meta model
         {
             "accessor": "name",
@@ -291,5 +316,5 @@ context = {
 
 def table(request):
     if request.htmx:
-        return render(request, "table/partials/table.html", {"table": TABLE_SPEC})
-    return render(request, "table/index.html", {"context": {"table": TABLE_SPEC}})
+        return render(request, "table/partials/table.html", context)
+    return render(request, "table/index.html", context)
