@@ -244,7 +244,6 @@ context = {
             "bottom_right": "partials/add_button.html",
         },
     },
-    "request": {},  # From here we can get the current filter and sort already added to the query
     "page_size_options": [
         {"size": 10, "url": "?page_size=10"},
         {"size": 50, "url": "?page_size=50"},
