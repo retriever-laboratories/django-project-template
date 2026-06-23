@@ -7,17 +7,26 @@ PAGE_PARAMS = {"page", "o", "page_size"}
 
 
 @register.simple_tag
-def filter_params(request):
-    return [
-        (key, values)
-        for key, values in request.GET.lists()
-        if key not in PAGE_PARAMS
-    ]
+def group_params(request):
+    filter_params = []
+    page_params = []
+
+    for name, values in request.GET.lists():
+        if name in PAGE_PARAMS:
+            page_params.append((name, values))
+            continue
+
+        filter_params.append((name, values))
+
+    return {
+        "filters": filter_params,
+        "page": page_params,
+    }
 
 
 @register.simple_tag
 def clear_filters_url(request):
-    applied_filters = filter_params(request)
+    applied_filters = group_params(request)["filters"]
     if not applied_filters:
         return None
 
@@ -73,14 +82,18 @@ def sort_url(request, field_name, direction):
 
 
 @register.simple_tag
-def pagination_url(request, **updates):
-    params = request.GET.copy()
-    for key, value in updates.items():
+def pagination_url(request, **changes):
+    query_params = request.GET.copy()
+
+    for name, value in changes.items():
         if value is None:
-            params.pop(key, None)
-        else:
-            params[key] = value
-    return f"{request.path}?{params.urlencode()}"
+            query_params.pop(name, None)
+            continue
+
+        query_params[name] = value
+
+    query_string = query_params.urlencode()
+    return f"{request.path}?{query_string}" if query_string else request.path
 
 
 @register.simple_tag
