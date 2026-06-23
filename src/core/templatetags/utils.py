@@ -8,6 +8,11 @@ def get_field(obj, field_name):
     return getattr(obj, field_name, "")
 
 
+@register.filter
+def getlist(querydict, key):
+    return querydict.getlist(key)
+
+
 @register.simple_tag
 def sort_direction(request, field_name):
     for token in request.GET.getlist("o"):

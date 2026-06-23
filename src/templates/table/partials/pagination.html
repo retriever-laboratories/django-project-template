@@ -10,7 +10,9 @@
 
   <div
     class="dropdown dropdown-top dropdown-center"
-    x-data="{ open: false }"
+    x-data="{
+      open: false,
+    }"
     :class="{ 'dropdown-open': open }"
     @click.outside="open = false">
     <button type="button" class="btn btn-sm btn-outline w-[50px]" :aria-expanded="open" @click="open = !open">

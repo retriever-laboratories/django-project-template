@@ -2,10 +2,23 @@
 <div class="flex items-center gap-2">
   <form
     class="dropdown dropdown-bottom"
-    x-data="{ open: false, active: null }"
+    x-data="{
+      open: false,
+      active: null,
+    }"
     :class="{ 'dropdown-open': open }"
-    @click.outside="open = false; active = null">
-    <button type="button" class="btn btn-sm btn-primary" :aria-expanded="open" @click="open = !open; active = null">
+    @click.outside="
+      open = false;
+      active = null;
+    ">
+    <button
+      type="button"
+      class="btn btn-sm btn-primary"
+      :aria-expanded="open"
+      @click="
+        open = !open;
+        active = null;
+      ">
       <img src="{% static 'icons/funnel.svg' %}" class="size-4" alt="">
       Filter
     </button>

@@ -1,7 +1,9 @@
 {% load static %}
 <div
   class="dropdown dropdown-bottom dropdown-start"
-  x-data="{ open: false }"
+  x-data="{
+    open: false,
+  }"
   :class="{ 'dropdown-open': open }"
   @click.outside="open = false">
   <button type="button" class="flex cursor-pointer items-center gap-1" :aria-expanded="open" @click="open = !open">
