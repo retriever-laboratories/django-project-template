@@ -11,6 +11,12 @@
       open = false;
       active = null;
     ">
+    {% group_params request as query %}
+    {% for key, values in query.page %}
+      {% for value in values %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+      {% endfor %}
+    {% endfor %}
     <button
       type="button"
       class="btn btn-sm btn-primary"
