@@ -1,7 +1,12 @@
-<tr data-row-id="{{ row_id }}" class="hover:bg-base-300">
-  <td><a href="#" class="link link-primary">{{ id_label }}</a></td>
-  <td class="font-bold">{{ name }}</td>
-  <td>{{ email }}</td>
-  <td>{{ role }}</td>
-  <td><span class="badge badge-xs badge-soft {{ status_class }}">{{ status }}</span></td>
+{% load utils %}
+<tr data-row-id="{{ object.id }}" class="hover:bg-base-300">
+  {% for column in table.columns %}
+    <td>
+      {% if column.partial %}
+        {% include column.partial with value=object|getattr:column.field class=column.class %}
+      {% else %}
+        {{ object|getattr:column.field }}
+      {% endif %}
+    </td>
+  {% endfor %}
 </tr>
