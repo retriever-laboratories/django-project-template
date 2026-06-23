@@ -48,5 +48,10 @@
     {% endfor %}
   </form>
 
-  <button type="button" class="btn btn-sm">Clear all</button>
+  <button
+    type="button"
+    class="btn btn-sm"
+    {% if request.GET %}hx-get="{{ request.path }}"{% else %}disabled{% endif %}>
+    Clear all
+  </button>
 </div>
