@@ -288,12 +288,12 @@ context = {
     ],
     "filters": [  # object to render the filter menu, created by the meta model
         {
-            "accessor": "name",
-            "type": "text",
+            "field": "name",
+            "filter_input_type": "text",
         },
         {
-            "accessor": "role",
-            "type": "select",
+            "field": "role",
+            "filter_input_type": "select",
             "options": [
                 {"value": "admin", "label": "Admin"},
                 {"value": "editor", "label": "Editor"},
@@ -301,8 +301,8 @@ context = {
             ],
         },
         {
-            "accessor": "status",
-            "type": "select",
+            "field": "status",
+            "filter_input_type": "select",
             "options": [
                 {"value": "active", "label": "Active"},
                 {"value": "invited", "label": "Invited"},

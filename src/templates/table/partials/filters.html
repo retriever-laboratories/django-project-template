@@ -15,59 +15,24 @@
       x-show="open && !active"
       style="display: none">
       <li class="menu-title">Filter by</li>
-      <li><button type="button" @click="active = 'name'">Name</button></li>
-      <li><button type="button" @click="active = 'email'">Email</button></li>
-      <li><button type="button" @click="active = 'role'">Role</button></li>
-      <li><button type="button" @click="active = 'status'">Status</button></li>
+      {% for filter in filters %}
+        <li><button type="button" @click="active = '{{ filter.field }}'">{{ filter.field }}</button></li>
+      {% endfor %}
     </ul>
 
-    <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === 'name'" style="display: none">
-      <div class="card-body">
-        <div class="card-title gap-2">
-          <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
-            <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
-          </button>
-          <span>Name</span>
+    {% for filter in filters %}
+      <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === '{{ filter.field }}'" style="display: none">
+        <div class="card-body">
+          <div class="card-title gap-2">
+            <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
+              <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
+            </button>
+            <span>{{ filter.field }}</span>
+          </div>
+          {% include "table/filters/"|add:filter.filter_input_type|add:".html" %}
         </div>
-        {% include "table/filters/text.html" only %}
       </div>
-    </div>
-
-    <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === 'email'" style="display: none">
-      <div class="card-body">
-        <div class="card-title gap-2">
-          <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
-            <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
-          </button>
-          <span>Email</span>
-        </div>
-        {% include "table/filters/text.html" only %}
-      </div>
-    </div>
-
-    <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === 'role'" style="display: none">
-      <div class="card-body">
-        <div class="card-title gap-2">
-          <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
-            <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
-          </button>
-          <span>Role</span>
-        </div>
-        {% include "table/filters/select.html" only %}
-      </div>
-    </div>
-
-    <div class="dropdown-content card card-sm card-border z-10 w-[254px] bg-base-100 shadow-sm" x-show="open && active === 'status'" style="display: none">
-      <div class="card-body">
-        <div class="card-title gap-2">
-          <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" @click="active = null">
-            <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
-          </button>
-          <span>Status</span>
-        </div>
-        {% include "table/filters/select.html" only %}
-      </div>
-    </div>
+    {% endfor %}
   </form>
 
   <button type="button" class="btn btn-sm">Clear all</button>
