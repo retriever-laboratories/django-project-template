@@ -48,10 +48,11 @@
     {% endfor %}
   </form>
 
+  {% clear_filters_url request as clear_url %}
   <button
     type="button"
     class="btn btn-sm"
-    {% if request.GET %}hx-get="{{ request.path }}"{% else %}disabled{% endif %}>
+    {% if clear_url %}hx-get="{{ clear_url }}"{% else %}disabled{% endif %}>
     Clear all
   </button>
 </div>
