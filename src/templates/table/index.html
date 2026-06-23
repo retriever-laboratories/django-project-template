@@ -2,8 +2,12 @@
 {% block title %}Table{% endblock %}
 {% block content %}
   <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">Table</h1>
-
-    {% include "table/partials/table.html" with table=context.table only %}
+    <h1 class="text-2xl font-bold mb-4">Table </h1>
+  
+    {{ request.GET.items }}
+    {%for k,v in request.GET.items %}
+      <p>{{ k }}: {{ v }}</p>
+    {% endfor %}
+    {% include "table/partials/table.html" only %}
   </div>
 {% endblock %}
