@@ -1,9 +1,26 @@
+{% load utils %}
 <nav class="flex flex-wrap items-center gap-2 text-sm" aria-label="Table pagination">
   <p>Page <span class="font-bold">{{ page_obj.number }}</span> of <span class="font-bold">{{ page_obj.paginator.num_pages }}</span></p>
 
   <div class="join">
-    <button class="join-item btn btn-xs w-[26px]" {% if not page_obj.has_previous %}disabled{% endif %} aria-label="Previous page">«</button>
-    <button class="join-item btn btn-xs w-[26px]" {% if not page_obj.has_next %}disabled{% endif %} aria-label="Next page">»</button>
+    <button
+      type="button"
+      class="join-item btn btn-xs w-[26px]"
+      {% if page_obj.has_previous %}
+        hx-get="{% page_url request page_obj.previous_page_number %}"
+      {% else %}
+        disabled
+      {% endif %}
+      aria-label="Previous page">«</button>
+    <button
+      type="button"
+      class="join-item btn btn-xs w-[26px]"
+      {% if page_obj.has_next %}
+        hx-get="{% page_url request page_obj.next_page_number %}"
+      {% else %}
+        disabled
+      {% endif %}
+      aria-label="Next page">»</button>
   </div>
 
   <p><span class="font-bold">{{ page_obj.paginator.count }}</span> Total items <span class="font-bold">/</span> Showing</p>
