@@ -48,6 +48,13 @@ def sort_url(request, field_name, direction):
 
 
 @register.simple_tag
+def page_url(request, page_number):
+    params = request.GET.copy()
+    params["page"] = page_number
+    return f"{request.path}?{params.urlencode()}"
+
+
+@register.simple_tag
 def remove_filter_url(request, key, value):
     params = request.GET.copy()
     params.setlist(key, [item for item in params.getlist(key) if item != value])
