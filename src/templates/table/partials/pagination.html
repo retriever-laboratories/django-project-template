@@ -1,12 +1,12 @@
 <nav class="flex flex-wrap items-center gap-2 text-sm" aria-label="Table pagination">
-  <p>Page <span class="font-bold">1</span> of <span class="font-bold">2</span></p>
+  <p>Page <span class="font-bold">{{ page_obj.number }}</span> of <span class="font-bold">{{ page_obj.paginator.num_pages }}</span></p>
 
   <div class="join">
-    <button class="join-item btn btn-xs w-[26px]" disabled aria-label="Previous page">«</button>
-    <button class="join-item btn btn-xs w-[26px]" aria-label="Next page">»</button>
+    <button class="join-item btn btn-xs w-[26px]" {% if not page_obj.has_previous %}disabled{% endif %} aria-label="Previous page">«</button>
+    <button class="join-item btn btn-xs w-[26px]" {% if not page_obj.has_next %}disabled{% endif %} aria-label="Next page">»</button>
   </div>
 
-  <p><span class="font-bold">5</span> Total items <span class="font-bold">/</span> Showing</p>
+  <p><span class="font-bold">{{ page_obj.paginator.count }}</span> Total items <span class="font-bold">/</span> Showing</p>
 
   <div
     class="dropdown dropdown-top dropdown-center"
@@ -16,16 +16,16 @@
     :class="{ 'dropdown-open': open }"
     @click.outside="open = false">
     <button type="button" class="btn btn-sm btn-outline w-[50px]" :aria-expanded="open" @click="open = !open">
-      3
+      {{ page_obj.paginator.per_page }}
     </button>
 
     <ul
       class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs"
       x-show="open"
       style="display: none">
-      <li><button type="button">10</button></li>
-      <li><button type="button">50</button></li>
-      <li><button type="button">100</button></li>
+      {% for option in page_size_options %}
+        <li><button type="button">{{ option.size }}</button></li>
+      {% endfor %}
     </ul>
   </div>
 
