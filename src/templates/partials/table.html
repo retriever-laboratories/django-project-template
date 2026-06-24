@@ -18,7 +18,9 @@
     </table>
   </div>
 
-  {% include "table/partials/pagination.html" %}
+  {% if page_obj %}
+    {% include "table/partials/pagination.html" %}
+  {% endif %}
 
   {% include "table/partials/table_bottom.html" %}
 </div>
