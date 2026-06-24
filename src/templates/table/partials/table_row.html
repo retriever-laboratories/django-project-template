@@ -2,8 +2,8 @@
 <tr data-row-id="{{ object.id }}" class="hover:bg-base-300">
   {% for column in table.columns %}
     <td>
-      {% if column.partial %}
-        {% include column.partial with value=object|getattr:column.field class=column.class %}
+      {% if column.partial and column.partial != "default" %}
+        {% include column.partial with value=object|getattr:column.field class=column.class object=object %}
       {% else %}
         {{ object|getattr:column.field }}
       {% endif %}
