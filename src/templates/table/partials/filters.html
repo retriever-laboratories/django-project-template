@@ -13,9 +13,11 @@
     ">
     {% group_params request as query %}
     {% for key, values in query.page %}
-      {% for value in values %}
-        <input type="hidden" name="{{ key }}" value="{{ value }}">
-      {% endfor %}
+      {% if key != "page" %}
+        {% for value in values %}
+          <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+      {% endif %}
     {% endfor %}
     <button
       type="button"
