@@ -4,8 +4,7 @@
     {% for column in table.columns %}
       <th scope="col" class="z-[2]">
         {% if column.sortable %}
-          {% sort_direction request column.field as direction %}
-          {% include "table/partials/sort.html" with direction=direction field=column.field %}
+          {% include "table/partials/sort.html" with field=column.field %}
         {% else %}
           {{ model|verbose_name:column.field }}
         {% endif %}
