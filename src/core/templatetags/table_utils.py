@@ -1,5 +1,4 @@
 from django import template
-from django.utils.text import capfirst
 
 register = template.Library()
 
@@ -46,7 +45,7 @@ def getlist(querydict, key):
 
 @register.filter
 def verbose_name(model, field_name):
-    return capfirst(model._meta.get_field(field_name).verbose_name)
+    return model._meta.get_field(field_name).verbose_name
 
 
 @register.simple_tag
@@ -75,21 +74,6 @@ def sort_url(request, field_name, direction):
 
     query = params.urlencode()
     return f"{request.path}?{query}" if query else request.path
-
-
-@register.simple_tag
-def pagination_url(request, **changes):
-    query_params = request.GET.copy()
-
-    for name, value in changes.items():
-        if value is None:
-            query_params.pop(name, None)
-            continue
-
-        query_params[name] = value
-
-    query_string = query_params.urlencode()
-    return f"{request.path}?{query_string}" if query_string else request.path
 
 
 @register.simple_tag

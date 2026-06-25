@@ -1,4 +1,3 @@
-{% load table_utils %}
 <nav class="flex flex-wrap items-center gap-2 text-sm" aria-label="Table pagination">
   <p>Page <span class="font-bold">{{ page_obj.number }}</span> of <span class="font-bold">{{ page_obj.paginator.num_pages }}</span></p>
 
@@ -7,7 +6,7 @@
       type="button"
       class="join-item btn btn-xs w-[26px]"
       {% if page_obj.has_previous %}
-        hx-get="{% pagination_url request page=page_obj.previous_page_number %}"
+        hx-get="{% querystring page=page_obj.previous_page_number %}"
       {% else %}
         disabled
       {% endif %}
@@ -16,7 +15,7 @@
       type="button"
       class="join-item btn btn-xs w-[26px]"
       {% if page_obj.has_next %}
-        hx-get="{% pagination_url request page=page_obj.next_page_number %}"
+        hx-get="{% querystring page=page_obj.next_page_number %}"
       {% else %}
         disabled
       {% endif %}
@@ -31,10 +30,10 @@
     </button>
 
     <ul class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs">
-      <li><button type="button" hx-get="{% pagination_url request page_size=10 page=None %}">10</button></li>
-      <li><button type="button" hx-get="{% pagination_url request page_size=25 page=None %}">25</button></li>
-      <li><button type="button" hx-get="{% pagination_url request page_size=50 page=None %}">50</button></li>
-      <li><button type="button" hx-get="{% pagination_url request page_size=100 page=None %}">100</button></li>
+      <li><button type="button" hx-get="{% querystring page_size=10 page=None %}">10</button></li>
+      <li><button type="button" hx-get="{% querystring page_size=25 page=None %}">25</button></li>
+      <li><button type="button" hx-get="{% querystring page_size=50 page=None %}">50</button></li>
+      <li><button type="button" hx-get="{% querystring page_size=100 page=None %}">100</button></li>
     </ul>
   </div>
 
