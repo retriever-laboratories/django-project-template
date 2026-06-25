@@ -18,7 +18,7 @@
     <ul class="dropdown-content menu menu-xs z-10 w-[254px] rounded-box bg-base-100 shadow-xs" data-filter-menu>
       <li class="menu-title">Filter by</li>
       {% for filter in filters %}
-        <li><button type="button" data-filter-open="{{ filter.field }}">{{ model|verbose_name:filter.field }}</button></li>
+        <li><button type="button" data-filter-open="{{ filter.field }}">{{ model|verbose_name:filter.field|capfirst }}</button></li>
       {% endfor %}
     </ul>
 
@@ -29,7 +29,7 @@
             <button type="button" class="btn btn-xs btn-primary btn-ghost" aria-label="Back to filters" data-filter-back>
               <img src="{% static 'icons/arrow-left.svg' %}" class="size-4" alt="">
             </button>
-            <span>{{ model|verbose_name:filter.field }}</span>
+            <span>{{ model|verbose_name:filter.field|capfirst }}</span>
           </div>
           {% include "table/filters/"|add:filter.filter_input_type|add:".html" %}
         </div>

@@ -7,7 +7,7 @@
           {% if column.sortable %}
             {% include "table/partials/sort.html" with column=column %}
           {% else %}
-            {{ model|verbose_name:column.field }}
+            {{ model|verbose_name:column.field|capfirst }}
           {% endif %}
         </th>
       {% endfor %}
