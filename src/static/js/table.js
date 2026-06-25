@@ -1,15 +1,19 @@
 (function () {
   function openDropdown(dropdown) {
-    dropdown.classList.add("dropdown-open");
-    const trigger = dropdown.querySelector("[data-dropdown-trigger]");
-    if (trigger) trigger.setAttribute("aria-expanded", "true");
+    setDropdownOpen(dropdown, true);
   }
 
   function closeDropdown(dropdown) {
-    dropdown.classList.remove("dropdown-open");
+    setDropdownOpen(dropdown, false);
+  }
+
+  function setDropdownOpen(dropdown, isOpen) {
+    dropdown.classList.toggle("dropdown-open", isOpen);
+
     const trigger = dropdown.querySelector("[data-dropdown-trigger]");
-    if (trigger) trigger.setAttribute("aria-expanded", "false");
-    resetPanels(dropdown);
+    if (trigger) trigger.setAttribute("aria-expanded", String(isOpen));
+
+    if (!isOpen) resetPanels(dropdown);
   }
 
   function resetPanels(dropdown) {
