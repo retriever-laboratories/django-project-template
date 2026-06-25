@@ -2,7 +2,7 @@
   {% for cell in object.row %}
     <td class="{{ cell.class }}">
       {% if cell.partial and cell.partial != "default" %}
-        {% include cell.partial with value=cell.value object=object class=cell.class %}
+        {% include cell.partial with cell=cell %}
       {% else %}
         {{ cell.value }}
       {% endif %}
