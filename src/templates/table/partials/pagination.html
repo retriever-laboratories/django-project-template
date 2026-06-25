@@ -31,9 +31,10 @@
     </button>
 
     <ul class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs">
-      {% for size in page_size_options %}
-        <li><button type="button" hx-get="{% pagination_url request page_size=size page=None %}">{{ size }}</button></li>
-      {% endfor %}
+      <li><button type="button" hx-get="{% pagination_url request page_size=10 page=None %}">10</button></li>
+      <li><button type="button" hx-get="{% pagination_url request page_size=25 page=None %}">25</button></li>
+      <li><button type="button" hx-get="{% pagination_url request page_size=50 page=None %}">50</button></li>
+      <li><button type="button" hx-get="{% pagination_url request page_size=100 page=None %}">100</button></li>
     </ul>
   </div>
 
