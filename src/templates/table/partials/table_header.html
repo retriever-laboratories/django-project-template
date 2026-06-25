@@ -1,14 +1,16 @@
 {% load utils %}
-<thead>
-  <tr>
-    {% for column in table.columns %}
-      <th scope="col" class="z-[2]">
-        {% if column.sortable %}
-          {% include "table/partials/sort.html" with field=column.field %}
-        {% else %}
-          {{ model|verbose_name:column.field }}
-        {% endif %}
-      </th>
-    {% endfor %}
-  </tr>
-</thead>
+{% with columns=model.table_columns %}
+  <thead>
+    <tr>
+      {% for column in columns %}
+        <th scope="col" class="z-[2]">
+          {% if column.sortable %}
+            {% include "table/partials/sort.html" with field=column.field %}
+          {% else %}
+            {{ model|verbose_name:column.field }}
+          {% endif %}
+        </th>
+      {% endfor %}
+    </tr>
+  </thead>
+{% endwith %}
