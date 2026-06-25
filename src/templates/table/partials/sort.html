@@ -1,13 +1,7 @@
 {% load static utils %}
 {% sort_direction request field as direction %}
-<div
-  class="dropdown dropdown-bottom dropdown-start"
-  x-data="{
-    open: false,
-  }"
-  :class="{ 'dropdown-open': open }"
-  @click.outside="open = false">
-  <button type="button" class="flex cursor-pointer items-center gap-1" :aria-expanded="open" @click="open = !open">
+<div class="dropdown dropdown-bottom dropdown-start">
+  <button type="button" class="flex cursor-pointer items-center gap-1" aria-expanded="false" data-dropdown-trigger>
     {{ model|verbose_name:field }}
     {% if direction == "asc" %}
       <img src="{% static 'icons/arrow-down.svg' %}" class="size-4" alt="">
@@ -18,10 +12,7 @@
     {% endif %}
   </button>
 
-  <ul
-    class="dropdown-content menu menu-vertical menu-xs z-10 w-[141px] rounded-box bg-base-100 font-normal"
-    x-show="open"
-    style="display: none">
+  <ul class="dropdown-content menu menu-vertical menu-xs z-10 w-[141px] rounded-box bg-base-100 font-normal">
     <li class="menu-title">Sort by</li>
     {% sort_url request field "asc" as asc_url %}
     {% sort_url request field "desc" as desc_url %}
