@@ -33,14 +33,10 @@ def clear_filters_url(request):
     params = request.GET.copy()
     for field, _ in applied_filters:
         del params[field]
+    params.pop("page", None)
 
     query = params.urlencode()
     return f"{request.path}?{query}" if query else request.path
-
-
-@register.filter(name="getattr")
-def get_field(obj, field_name):
-    return getattr(obj, field_name, "")
 
 
 @register.filter
@@ -100,6 +96,7 @@ def pagination_url(request, **changes):
 def remove_filter_url(request, key, value):
     params = request.GET.copy()
     params.setlist(key, [item for item in params.getlist(key) if item != value])
+    params.pop("page", None)
 
     query = params.urlencode()
     return f"{request.path}?{query}" if query else request.path
