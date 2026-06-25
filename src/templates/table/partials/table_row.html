@@ -1,11 +1,10 @@
-{% load utils %}
 <tr data-row-id="{{ object.id }}" class="hover:bg-base-300">
-  {% for column in table.columns %}
-    <td>
-      {% if column.partial and column.partial != "default" %}
-        {% include column.partial with value=object|getattr:column.field class=column.class object=object %}
+  {% for cell in object.row %}
+    <td class="{{ cell.class }}">
+      {% if cell.partial and cell.partial != "default" %}
+        {% include cell.partial with value=cell.value object=object class=cell.class %}
       {% else %}
-        {{ object|getattr:column.field }}
+        {{ cell.value }}
       {% endif %}
     </td>
   {% endfor %}
