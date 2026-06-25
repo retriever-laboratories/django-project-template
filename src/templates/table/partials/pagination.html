@@ -25,21 +25,12 @@
 
   <p><span class="font-bold">{{ page_obj.paginator.count }}</span> Total items <span class="font-bold">/</span> Showing</p>
 
-  <div
-    class="dropdown dropdown-top dropdown-center"
-    x-data="{
-      open: false,
-    }"
-    :class="{ 'dropdown-open': open }"
-    @click.outside="open = false">
-    <button type="button" class="btn btn-sm btn-outline w-[50px]" :aria-expanded="open" @click="open = !open">
+  <div class="dropdown dropdown-top dropdown-center">
+    <button type="button" class="btn btn-sm btn-outline w-[50px]" aria-expanded="false" data-dropdown-trigger>
       {{ page_obj.paginator.per_page }}
     </button>
 
-    <ul
-      class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs"
-      x-show="open"
-      style="display: none">
+    <ul class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs">
       {% for size in page_size_options %}
         <li><button type="button" hx-get="{% pagination_url request page_size=size page=None %}">{{ size }}</button></li>
       {% endfor %}

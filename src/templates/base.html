@@ -12,8 +12,9 @@
 
         <!-- Global CSS -->
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
-         <!-- Optional: Alpine.js for sprinkles -->
-        <script src="https://unpkg.com/alpinejs@3.x.x" defer></script>
+        
+        <!-- Optional: Alpine.js for sprinkles -->
+        <!-- <script src="https://unpkg.com/alpinejs@3.x.x" defer></script> -->
 
         <!-- HTMX -->
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
@@ -43,6 +44,9 @@
 
         <!-- Toast auto-dismiss -->
         <script src="{% static 'js/toast.js' %}"></script>
+
+        <!-- Table UI (dropdowns, filter panels, chips) -->
+        <script src="{% static 'js/table.js' %}"></script>
 
 
         {% block extra_js %}{% endblock %}
