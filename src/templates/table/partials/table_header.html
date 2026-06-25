@@ -5,7 +5,7 @@
       {% for column in columns %}
         <th scope="col" class="z-[2]">
           {% if column.sortable %}
-            {% include "table/partials/sort.html" with field=column.field %}
+            {% include "table/partials/sort.html" with column=column %}
           {% else %}
             {{ model|verbose_name:column.field }}
           {% endif %}
