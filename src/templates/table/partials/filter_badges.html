@@ -1,14 +1,12 @@
 {% load static table_utils %}
-{% group_params request as query %}
 <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-  {% for key, values in query.filters %}
+  {% for applied_filter in filter_applied %}
     <div class="flex items-center gap-0.5 rounded-box bg-base-200 px-1 py-0.5">
-      <span class="badge badge-xs badge-primary badge-soft">{{ model|verbose_name:key|capfirst }}</span>
-      {% for value in values %}
+      <span class="badge badge-xs badge-primary badge-soft">{{ model|verbose_name:applied_filter.field|capfirst }}</span>
+      {% for filter in applied_filter.values %}
         <span class="badge badge-xs gap-1">
-          {{ value }}
-          {% remove_filter_params request key value as remove_params %}
-          <button type="button" hx-get="{% querystring remove_params page=None %}" class="cursor-pointer" aria-label="Remove {{ value }}">
+          {{ filter.value }}
+          <button type="button" hx-get="{% querystring filter.remove %}" class="cursor-pointer" aria-label="Remove {{ filter.value }}">
             <img src="{% static 'icons/x-mark.svg' %}" class="size-3" alt="">
           </button>
         </span>
