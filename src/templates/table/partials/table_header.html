@@ -5,7 +5,11 @@
       {% for column in columns %}
         <th scope="col" class="z-[2]">
           {% if column.sortable %}
-            {% include "table/partials/sort.html" with column=column %}
+            {% for order in ordering_applied %}
+              {% if order.field == column.field %}
+                {% include "table/partials/sort.html" with order=order %}
+              {% endif %}
+            {% endfor %}
           {% else %}
             {{ model|verbose_name:column.field|capfirst }}
           {% endif %}
