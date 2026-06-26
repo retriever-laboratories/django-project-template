@@ -7,8 +7,8 @@
       {% for value in values %}
         <span class="badge badge-xs gap-1">
           {{ value }}
-          {% remove_filter_url request key value as remove_url %}
-          <button type="button" hx-get="{{ remove_url }}" class="cursor-pointer" aria-label="Remove {{ value }}">
+          {% remove_filter_params request key value as remove_params %}
+          <button type="button" hx-get="{% querystring remove_params page=None %}" class="cursor-pointer" aria-label="Remove {{ value }}">
             <img src="{% static 'icons/x-mark.svg' %}" class="size-3" alt="">
           </button>
         </span>
