@@ -2,9 +2,8 @@
 {% with filters=model.filtrable_fields %}
 <div class="flex items-center gap-2">
   <form class="dropdown dropdown-bottom">
-    {% group_params request as query %}
-    {% for key, values in query.page %}
-      {% if key != "page" %}
+    {% for key, values in request.GET.lists %}
+      {% if key == "o" or key == "page_size" %}
         {% for value in values %}
           <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
@@ -37,11 +36,11 @@
     {% endfor %}
   </form>
 
-  {% clear_filters_url request as clear_url %}
+  {% querystring request.GET|getlist:"o"|as_dict:"o" request.GET|getlist:"page_size"|as_dict:"page_size" page=1 as clear_url %}
   <button
     type="button"
     class="btn btn-sm"
-    {% if clear_url %}hx-get="{{ clear_url }}"{% else %}disabled{% endif %}>
+    hx-get="{{ clear_url }}">
     Clear all
   </button>
 </div>
