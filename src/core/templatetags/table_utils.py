@@ -2,26 +2,6 @@ from django import template
 
 register = template.Library()
 
-PAGE_PARAMS = {"page", "o", "page_size"}
-
-
-@register.simple_tag
-def group_params(request):
-    filter_params = []
-    page_params = []
-
-    for name, values in request.GET.lists():
-        if name in PAGE_PARAMS:
-            page_params.append((name, values))
-            continue
-
-        filter_params.append((name, values))
-
-    return {
-        "filters": filter_params,
-        "page": page_params,
-    }
-
 
 @register.filter
 def getlist(querydict, key):
@@ -31,3 +11,17 @@ def getlist(querydict, key):
 @register.filter
 def verbose_name(model, field_name):
     return model._meta.get_field(field_name).verbose_name
+
+
+@register.filter
+def list_add(values, item):
+    return [*values, item] if item not in values else list(values)
+
+@register.filter
+def list_remove(values, item):
+    return [v for v in values if v != item]
+
+
+@register.filter
+def as_dict(value, key):
+    return {key: value}
