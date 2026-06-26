@@ -37,11 +37,10 @@
     {% endfor %}
   </form>
 
-  {% clear_filter_params request as clear_params %}
   <button
     type="button"
     class="btn btn-sm"
-    {% if clear_params is not None %}hx-get="{% querystring clear_params page=None %}"{% else %}disabled{% endif %}>
+    {% if filters_cleared is not None %}hx-get="{% querystring filters_cleared %}"{% else %}disabled{% endif %}>
     Clear all
   </button>
 </div>
