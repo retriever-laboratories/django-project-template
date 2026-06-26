@@ -23,19 +23,6 @@ def group_params(request):
     }
 
 
-@register.simple_tag
-def clear_filter_params(request):
-    applied_filters = group_params(request)["filters"]
-    if not applied_filters:
-        return None
-
-    params = request.GET.copy()
-    for field, _ in applied_filters:
-        del params[field]
-
-    return params
-
-
 @register.filter
 def getlist(querydict, key):
     return querydict.getlist(key)
