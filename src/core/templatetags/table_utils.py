@@ -24,7 +24,7 @@ def group_params(request):
 
 
 @register.simple_tag
-def clear_filters_url(request):
+def clear_filter_params(request):
     applied_filters = group_params(request)["filters"]
     if not applied_filters:
         return None
@@ -32,10 +32,8 @@ def clear_filters_url(request):
     params = request.GET.copy()
     for field, _ in applied_filters:
         del params[field]
-    params.pop("page", None)
 
-    query = params.urlencode()
-    return f"{request.path}?{query}" if query else request.path
+    return params
 
 
 @register.filter
@@ -59,7 +57,7 @@ def sort_direction(request, field_name):
 
 
 @register.simple_tag
-def sort_url(request, field_name, direction):
+def sort_params(request, field_name, direction):
     order_field = field_name if direction == "asc" else f"-{field_name}"
     current_order = request.GET.getlist("o")
 
@@ -72,15 +70,12 @@ def sort_url(request, field_name, direction):
     params = request.GET.copy()
     params.setlist("o", new_order)
 
-    query = params.urlencode()
-    return f"{request.path}?{query}" if query else request.path
+    return params
 
 
 @register.simple_tag
-def remove_filter_url(request, key, value):
+def remove_filter_params(request, key, value):
     params = request.GET.copy()
     params.setlist(key, [item for item in params.getlist(key) if item != value])
-    params.pop("page", None)
 
-    query = params.urlencode()
-    return f"{request.path}?{query}" if query else request.path
+    return params
