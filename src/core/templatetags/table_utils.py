@@ -17,6 +17,7 @@ def verbose_name(model, field_name):
 def list_add(values, item):
     return [*values, item] if item not in values else list(values)
 
+
 @register.filter
 def list_remove(values, item):
     return [v for v in values if v != item]
