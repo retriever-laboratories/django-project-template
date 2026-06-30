@@ -1,5 +1,5 @@
 {% load static %}
-<button type="button" class="btn btn-sm btn-primary">
+<a href="{% url 'download' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" hx-boost="false" class="btn btn-sm btn-primary">
   <img src="{% static 'icons/arrow-down-tray.svg' %}" class="size-4" alt="">
   Download
-</button>
+</a>
