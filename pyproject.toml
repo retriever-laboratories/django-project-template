@@ -7,6 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "django>=6.0.5",
     "django-htmx>=1.27.0",
+    "django-htmx-base",
     "gunicorn",
     "psycopg[binary]>=3.2.0",
     "whitenoise>=6.11.0",
@@ -14,9 +15,12 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "django-debug-toolbar>=7.0.0",
+    "ipython>=9.15.0",
     "ruff>=0.15.17",
 ]
 
+<<<<<<< HEAD
 # ----------------------------- Ruff configuration -----------------------------
 
 [tool.ruff.lint]
@@ -33,3 +37,7 @@ known-first-party = ["app"]
 
 [tool.ruff.format]
 docstring-code-format = true
+=======
+[tool.uv.sources]
+django-htmx-base = { git = "https://github.com/retriever-laboratories/django-htmx-base.git", branch = "main" }
+>>>>>>> df40c6a (feat: add debug libraries, base templates and tags)

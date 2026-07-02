@@ -24,6 +24,22 @@ def group_params(request):
 
 
 @register.filter
+def verbose_name(model, field_name=None):
+    if field_name:
+        return model._meta.get_field(field_name).verbose_name
+
+    return model._meta.verbose_name
+
+
+@register.filter
+def verbose_name_plural(model, field_name=None):
+    if field_name:
+        return model._meta.get_field(field_name).verbose_name_plural
+
+    return model._meta.verbose_name_plural
+
+
+@register.filter
 def getlist(querydict, key):
     return querydict.getlist(key)
 
