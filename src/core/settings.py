@@ -61,9 +61,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third-party
     "django_htmx",
+    "django_htmx_base",
     # Internal
     "core",
+    "MyApp",
 ]
+
 
 # ----------------------------
 # Middleware
@@ -82,6 +85,19 @@ MIDDLEWARE = [
     # HTMX helper (adds request.htmx, etc.)
     "django_htmx.middleware.HtmxMiddleware",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+    INTERNAL_IPS = [
+        # ...
+        "127.0.0.1",
+        # ...
+    ]
 
 if HAS_WHITENOISE:
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
@@ -109,6 +125,9 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            "builtins": [
+                "templates.tags.custom_tags",
+            ]
         },
     }
 ]

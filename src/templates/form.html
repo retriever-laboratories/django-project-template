@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+    {% block title %}
+      {% if object %}
+        Edit {{ model_name }}
+      {% else %}
+        New {{ model_name }}
+      {% endif %}
+    {% endblock %}
+
+{% block content %}
+  <div class="flex max-w-md flex-col gap-4 p-4">
+    <h1 class="text-2xl font-bold">
+      {% if object %}
+        Edit {{ model_name }}
+      {% else %}
+        New {{ model_name }}
+      {% endif %}
+    </h1>
+
+    <form
+      method="post"
+      action="{% if object %}{% url 'contact-edit' object.pk %}{% else %}{% url 'contact-create' %}{% endif %}"
+      class="flex flex-col gap-4">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-error">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      {% for field in form %}
+        <fieldset class="fieldset">
+          <label class="label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <p class="text-error text-sm">{{ field.errors|join:", " }}</p>
+          {% endif %}
+        </fieldset>
+      {% endfor %}
+
+      <div class="flex gap-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'contact-list' %}" class="btn">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
