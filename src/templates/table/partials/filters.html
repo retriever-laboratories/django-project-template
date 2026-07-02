@@ -1,7 +1,7 @@
 {% load static table_utils %}
 {% with filters=model.filters_objects %}
 <div class="flex items-center gap-2">
-  <form class="dropdown dropdown-bottom">
+  <form class="dropdown dropdown-bottom" hx-get="{{ request.path }}">
     {% for key, values in request.GET.lists %}
       {% if key == "o" or key == "page_size" %}
         {% for value in values %}
