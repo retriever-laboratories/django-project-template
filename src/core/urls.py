@@ -52,7 +52,6 @@ def db_ping(request):
 
 
 urlpatterns = [
-    path("", include("MyApp.urls")),
     # Admin site
     path("admin/", admin.site.urls),
     # Global endpoints
