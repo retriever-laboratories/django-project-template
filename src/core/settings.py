@@ -64,7 +64,6 @@ INSTALLED_APPS = [
     "django_htmx_base",
     # Internal
     "core",
-    "MyApp",
 ]
 
 
