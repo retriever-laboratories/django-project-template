@@ -127,7 +127,7 @@ TEMPLATES = [
             ],
             "builtins": [
                 "templates.tags.custom_tags",
-            ]
+            ],
         },
     }
 ]
