@@ -15,7 +15,7 @@
         Filter
       </button>
   
-      <ul class="dropdown-content menu menu-xs z-10 w-[254px] rounded-box bg-base-100 shadow-xs" data-filter-menu>
+      <ul class="dropdown-content menu menu-xs z-10 w-[254px] rounded-box border border-base-200 bg-base-100 shadow-sm" data-filter-menu>
         <li class="menu-title">Filter by</li>
         {% for filter in filters %}
           <li><button type="button" data-filter-open="{{ filter.field }}">{{ model|verbose_name:filter.field|capfirst }}</button></li>
