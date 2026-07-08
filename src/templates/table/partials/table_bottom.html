@@ -2,7 +2,7 @@
   <div class="flex flex-wrap items-center gap-2"></div>
 
   <div class="flex items-center gap-2">
-    {% url 'contact-create' as create_url %}
+    {% url view.basename|add:'-create' as create_url %}
     {% if create_url %}
       {% include "partials/add_button.html" with url=create_url only %}
     {% endif %}
