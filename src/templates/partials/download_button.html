@@ -1,5 +1,5 @@
 {% load static %}
-<a href="{% url 'contact-download' %}{% querystring %}" hx-boost="false" class="btn btn-sm btn-primary">
+<a href="{% url view.basename|add:'-download' %}{% querystring %}" hx-boost="false" class="btn btn-sm btn-primary">
   <img src="{% static 'icons/arrow-down-tray.svg' %}" class="size-4" alt="">
   Download
 </a>
