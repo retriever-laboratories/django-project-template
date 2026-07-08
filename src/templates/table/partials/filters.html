@@ -2,7 +2,7 @@
 
 {% with filters=model.filters_objects %}
   <div class="flex items-center gap-2">
-    <form class="dropdown dropdown-bottom" hx-get="{{ request.path }}">
+    <form class="dropdown dropdown-bottom" hx-get="{{ request.path }}" name="partials/table.html">
       {% for key, values in request.GET.lists %}
         {% if key == "o" or key == "page_size" %}
           {% for value in values %}
