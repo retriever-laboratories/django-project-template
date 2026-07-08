@@ -8,6 +8,7 @@
       {% if page_obj.has_previous %}
         hx-get="{% querystring page=page_obj.previous_page_number %}"
         name="partials/table.html"
+        hx-params="none"
       {% else %}
         disabled
       {% endif %}
@@ -18,6 +19,7 @@
       {% if page_obj.has_next %}
         hx-get="{% querystring page=page_obj.next_page_number %}"
         name="partials/table.html"
+        hx-params="none"
       {% else %}
         disabled
       {% endif %}
@@ -32,10 +34,10 @@
     </button>
 
     <ul class="dropdown-content menu menu-xs z-10 w-[70px] rounded-box bg-base-100 shadow-xs">
-      <li><button type="button" hx-get="{% querystring page_size=10 page=None %}" name="partials/table.html">10</button></li>
-      <li><button type="button" hx-get="{% querystring page_size=25 page=None %}" name="partials/table.html">25</button></li>
-      <li><button type="button" hx-get="{% querystring page_size=50 page=None %}" name="partials/table.html">50</button></li>
-      <li><button type="button" hx-get="{% querystring page_size=100 page=None %}" name="partials/table.html">100</button></li>
+      <li><button type="button" hx-get="{% querystring page_size=10 page=None %}" name="partials/table.html" hx-params="none">10</button></li>
+      <li><button type="button" hx-get="{% querystring page_size=25 page=None %}" name="partials/table.html" hx-params="none">25</button></li>
+      <li><button type="button" hx-get="{% querystring page_size=50 page=None %}" name="partials/table.html" hx-params="none">50</button></li>
+      <li><button type="button" hx-get="{% querystring page_size=100 page=None %}" name="partials/table.html" hx-params="none">100</button></li>
     </ul>
   </div>
 
