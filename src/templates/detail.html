@@ -22,8 +22,8 @@
     </dl>
 
     <div class="flex gap-2">
-      <a href="{% url view.basename|add:'-edit' object.pk %}" class="btn btn-primary">Edit</a>
-      <a href="{% url view.basename|add:'-list' %}" class="btn">Back</a>
+      <a href="{% url view.url_names.edit object.pk %}" class="btn btn-primary">Edit</a>
+      <a href="{% url view.url_names.list %}" class="btn">Back</a>
     </div>
   </div>
 {% endblock %}
