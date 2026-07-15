@@ -42,8 +42,3 @@ def verbose_name_plural(model, field_name=None):
 @register.filter
 def getlist(querydict, key):
     return querydict.getlist(key)
-
-
-@register.filter
-def verbose_name(model, field_name):
-    return model._meta.get_field(field_name).verbose_name
