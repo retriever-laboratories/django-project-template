@@ -26,7 +26,8 @@ def group_params(request):
 @register.filter
 def verbose_name(model, field_name=None):
     if field_name:
-        return model._meta.get_field(field_name).verbose_name
+        field = model._meta.get_field(field_name)
+        return field.verbose_name
 
     return model._meta.verbose_name
 
@@ -34,7 +35,8 @@ def verbose_name(model, field_name=None):
 @register.filter
 def verbose_name_plural(model, field_name=None):
     if field_name:
-        return model._meta.get_field(field_name).verbose_name_plural
+        field = model._meta.get_field(field_name)
+        return field.verbose_name_plural
 
     return model._meta.verbose_name_plural
 
