@@ -1,32 +1,23 @@
-{% load static table_utils %}
-<div class="dropdown dropdown-bottom dropdown-start">
-  <button type="button" class="flex cursor-pointer items-center gap-1" aria-expanded="false" data-dropdown-trigger>
-    {{ model|verbose_name:order.field|capfirst }}
-    {% if order.direction == "asc" %}
-      <img src="{% static 'icons/arrow-down.svg' %}" class="size-4" alt="">
-    {% elif order.direction == "desc" %}
-      <img src="{% static 'icons/arrow-up.svg' %}" class="size-4" alt="">
-    {% else %}
-      <img src="{% static 'icons/chevron-up-down.svg' %}" class="size-4 text-base-content/30" alt="">
-    {% endif %}
-  </button>
+{% load static %}
 
-  <ul class="dropdown-content menu menu-vertical menu-xs z-10 w-[141px] rounded-box bg-base-100 font-normal">
-    <li class="menu-title">Sort by</li>
-    {% querystring order.asc as asc_url %}
-    {% querystring order.desc as desc_url %}
-    <li>
-      <a href="{{ asc_url }}" hx-get="{{ asc_url }}" {% if order.direction == "asc" %}class="font-semibold"{% endif %}>
-        <img src="{% static 'icons/arrow-down.svg' %}" class="size-4" alt="">
-        Ascending
-      </a>
-    </li>
-    <li>
-      <a href="{{ desc_url }}" hx-get="{{ desc_url }}" {% if order.direction == "desc" %}class="font-semibold"{% endif %}>
-        <img src="{% static 'icons/arrow-up.svg' %}" class="size-4" alt="">
-        Descending
-      </a>
-    </li>
-  </ul>
-</div>
+{% with asc_field=column.field desc_field="-"|add:column.field %}
+  {% if desc_field in request.get_full_path %}
+   {% querystring o=None as sort_url %}
+   {% static 'icons/arrow-up.svg' as sort_icon %}
+  {% elif asc_field in request.get_full_path %}
+   {% querystring o=desc_field as sort_url %}
+   {% static 'icons/arrow-down.svg' as sort_icon %}
+  {% else %}
+   {% querystring o=asc_field as sort_url %}
+   {% static 'icons/chevron-up-down.svg' as sort_icon %}
+  {% endif %}
+
+  <div class="dropdown dropdown-bottom dropdown-start">
+    <button type="button" class="flex cursor-pointer items-center gap-1" aria-expanded="false" data-dropdown-trigger>
+      {{ column.field|title }}
+     <a  hx-boost="false" hx-get="{{ sort_url }}" class="flex items-center gap-1" aria-label="Sort by {{ column.field|title }}">
+          <img src="{{ sort_icon }}" class="size-4" alt="">
+        </a>
+    </button>
+  </div>
 {% endwith %}
