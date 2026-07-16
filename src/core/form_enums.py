@@ -1,8 +1,5 @@
 class FormClass:
-    TEXT = (
-        ""
-        ""
-    )
+    TEXT = ""
 
 
 class FormAttribute:
