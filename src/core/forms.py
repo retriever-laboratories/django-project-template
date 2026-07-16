@@ -7,7 +7,7 @@ from core.form_enums import FormAttribute
 
 
 class BaseModelForm(Form):
-    text_class = FormClass.TEXT 
+    text_class = FormClass.TEXT
     textarea_class = ""
     select_class = ""
     checkbox_class = ""
