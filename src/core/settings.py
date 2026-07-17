@@ -221,6 +221,11 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ----------------------------
+# Pagination
+# ----------------------------
+PAGINATE_BY = int(os.getenv("DJANGO_PAGINATE_BY", "10"))
+
+# ----------------------------
 # Security toggles for non-DEBUG
 # ----------------------------
 if not DEBUG:
