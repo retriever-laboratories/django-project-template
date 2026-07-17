@@ -44,3 +44,13 @@ def verbose_name_plural(model, field_name=None):
 @register.filter
 def getlist(querydict, key):
     return querydict.getlist(key)
+
+
+@register.filter
+def list_remove(values, item):
+    return [v for v in values if v != item]
+
+
+@register.filter
+def as_dict(value, key):
+    return {key: value}
