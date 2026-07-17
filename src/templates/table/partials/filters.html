@@ -34,14 +34,17 @@
             {% include "table/filters/"|add:filter.filter_input_type|add:".html" %}
           </div>
         </div>
-    {% endfor %}
-  </form>
-
-  <button
-    type="button"
-    class="btn btn-sm"
-    {% if filters_cleared is not None %}hx-get="{% querystring filters_cleared %}"{% else %}disabled{% endif %}>
-    Clear all
-  </button>
-</div>
+      {% endfor %}
+    </form>
+  
+    {% querystring request.GET|getlist:"o"|as_dict:"o" request.GET|getlist:"page_size"|as_dict:"page_size" page=1 as clear_url %}
+    <button
+      type="button"
+      class="btn btn-sm"
+      hx-get="{{ clear_url }}"
+      name="partials/table.html"
+      hx-params="none">
+      Clear all
+    </button>
+  </div>
 {% endwith %}
