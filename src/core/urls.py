@@ -55,7 +55,6 @@ def db_ping(request):
 
 
 urlpatterns = [
-    path("", home, name="home"),
     # Admin site
     path("admin/", admin.site.urls),
     # Global endpoints
@@ -66,3 +65,7 @@ urlpatterns = [
 
 if settings.HAS_DJANGOSAML2:
     urlpatterns.append(path("saml2/", include("djangosaml2.urls")))
+if settings.DEBUG:
+    from debug_toolbar.toolbar import debug_toolbar_urls
+
+    urlpatterns += debug_toolbar_urls()
