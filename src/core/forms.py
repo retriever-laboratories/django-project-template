@@ -2,7 +2,8 @@
 from django_htmx_base.forms import BaseModelForm as Form
 
 # enums
-from core.form_enums import FormAttribute, FormClass
+from core.form_enums import FormAttribute
+from core.form_enums import FormClass
 
 
 class BaseModelForm(Form):
