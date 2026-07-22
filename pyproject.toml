@@ -33,7 +33,7 @@ select = ["F", "E", "W", "I", "N", "C90", "ARG"]
 
 [tool.ruff.lint.isort]
 force-single-line = true
-known-first-party = ["django-htmx-base", "core"]
+known-first-party = ["django_htmx_base", "core"]
 
 [tool.ruff.format]
 docstring-code-format = true
