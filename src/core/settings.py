@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from pathlib import Path
-from importlib.util import find_spec
 import os
+from importlib.util import find_spec
+from pathlib import Path
 
 # ----------------------------
 # Paths
@@ -139,7 +139,7 @@ TEMPLATES = [
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 
 if DATABASE_URL:
-    # Minimal parser that works for common schemes; for production, consider dj-database-url
+    # Minimal parser. For production, consider dj-database-url
     from urllib.parse import urlparse
 
     parsed = urlparse(DATABASE_URL)
