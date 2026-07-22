@@ -7,7 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "django>=6.0.5",
     "django-htmx>=1.27.0",
-    "django-htmx-base",
+    "django-htmx-base>=0.1.2",
     "gunicorn",
     "psycopg[binary]>=3.2.0",
     "whitenoise>=6.11.0",
@@ -19,9 +19,6 @@ dev = [
     "ipython>=9.15.0",
     "ruff>=0.15.17",
 ]
-
-[tool.uv.sources]
-django-htmx-base = { git = "https://github.com/retriever-laboratories/django-htmx-base.git", branch = "main" }
 
 [tool.ruff.lint]
 # Go to https://docs.astral.sh/ruff/rules/ to see all the available rules.
