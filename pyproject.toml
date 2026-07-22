@@ -22,3 +22,18 @@ dev = [
 
 [tool.uv.sources]
 django-htmx-base = { git = "https://github.com/retriever-laboratories/django-htmx-base.git", branch = "main" }
+
+[tool.ruff.lint]
+# Go to https://docs.astral.sh/ruff/rules/ to see all the available rules.
+select = ["F", "E", "W", "I", "N", "C90", "ARG"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/" = ["ARG001"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = ["django-htmx-base", "core"]
+
+[tool.ruff.format]
+docstring-code-format = true
