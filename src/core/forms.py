@@ -2,17 +2,17 @@
 from django_htmx_base.forms import BaseModelForm as Form
 
 # enums
-from core.form_enums import FormClass
 from core.form_enums import FormAttribute
+from core.form_enums import FormClass
 
 
 class BaseModelForm(Form):
     text_class = FormClass.TEXT
-    textarea_class = ""
-    select_class = ""
-    checkbox_class = ""
+    textarea_class = FormClass.TEXTAREA
+    select_class = FormClass.SELECT
+    checkbox_class = FormClass.CHECKBOX
 
     text_attrs = FormAttribute.TEXT
-    textarea_attrs = {}
-    select_attrs = {}
-    checkbox_attrs = {}
+    textarea_attrs = FormAttribute.TEXTAREA
+    select_attrs = FormAttribute.SELECT
+    checkbox_attrs = FormAttribute.CHECKBOX
