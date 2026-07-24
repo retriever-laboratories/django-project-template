@@ -1,9 +1,8 @@
 # forms
-from django_htmx_base.forms import BaseModelForm as Form
-
 # enums
 from core.form_enums import FormAttribute
 from core.form_enums import FormClass
+from django_htmx_base.forms import BaseModelForm as Form
 
 
 class BaseModelForm(Form):

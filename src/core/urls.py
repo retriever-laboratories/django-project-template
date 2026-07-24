@@ -1,6 +1,6 @@
-from django.contrib import admin
 from django.conf import settings
 from django.contrib.auth.decorators import login_not_required
+from django.contrib import admin
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
