@@ -1,0 +1,32 @@
+name: Deploy stage
+
+on:
+  push:
+    tags:
+      - "**"
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Tag or SHA to deploy
+        required: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/_deploy-azure-app.yml
+    with:
+      checkout_ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.ref || github.ref }}
+      environment_tag: stage
+      build_image: false
+    secrets:
+      acr_login_server: ${{ secrets.ACR_LOGIN_SERVER }}
+      acr_name: ${{ secrets.ACR_NAME }}
+      azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      azure_resource_group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      azure_webapp_name: ${{ secrets.AZURE_WEBAPP_NAME_STAGE }}
+      image_name: ${{ secrets.IMAGE_NAME }}

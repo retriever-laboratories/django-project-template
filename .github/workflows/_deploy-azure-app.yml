@@ -1,0 +1,129 @@
+name: Deploy Azure app
+
+on:
+  workflow_call:
+    inputs:
+      checkout_ref:
+        description: Branch, tag, or SHA to deploy
+        required: true
+        type: string
+      environment_tag:
+        description: Docker image tag used by the target environment
+        required: true
+        type: string
+      build_image:
+        description: Build the Docker image instead of promoting an existing image
+        required: true
+        type: boolean
+    secrets:
+      acr_login_server:
+        required: true
+      acr_name:
+        required: true
+      azure_client_id:
+        required: true
+      azure_resource_group:
+        required: true
+      azure_subscription_id:
+        required: true
+      azure_tenant_id:
+        required: true
+      azure_webapp_name:
+        required: true
+      image_name:
+        required: true
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  IMAGE_TAG_PREFIX: sha-
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.environment_tag }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.checkout_ref }}
+
+      - name: Resolve image tags
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          source_sha="$(git rev-parse HEAD)"
+          echo "sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "immutable_tag=${IMAGE_TAG_PREFIX}${source_sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.azure_client_id }}
+          tenant-id: ${{ secrets.azure_tenant_id }}
+          subscription-id: ${{ secrets.azure_subscription_id }}
+
+      - name: Log in to Azure Container Registry
+        shell: bash
+        run: az acr login --name "${{ secrets.acr_name }}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        if: inputs.build_image
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          image="${{ secrets.acr_login_server }}/${{ secrets.image_name }}"
+
+          docker buildx build \
+            --file Dockerfile \
+            --tag "${image}:${{ steps.image.outputs.immutable_tag }}" \
+            --tag "${image}:${{ inputs.environment_tag }}" \
+            --push \
+            .
+
+      - name: Promote existing image
+        if: ${{ !inputs.build_image }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          image="${{ secrets.acr_login_server }}/${{ secrets.image_name }}"
+          immutable_tag="${{ steps.image.outputs.immutable_tag }}"
+
+          if ! docker buildx imagetools inspect "${image}:${immutable_tag}" >/dev/null; then
+            echo "Missing ${image}:${immutable_tag}. Build this exact commit from develop before promoting it." >&2
+            exit 1
+          fi
+
+          docker buildx imagetools create \
+            --tag "${image}:${{ inputs.environment_tag }}" \
+            "${image}:${immutable_tag}"
+
+      - name: Restart Azure App Service
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          az webapp restart \
+            --resource-group "${{ secrets.azure_resource_group }}" \
+            --name "${{ secrets.azure_webapp_name }}"
+
+      - name: Deployment summary
+        shell: bash
+        run: |
+          cat <<SUMMARY >> "$GITHUB_STEP_SUMMARY"
+          ## ${{ inputs.environment_tag }} deployment
+
+          - Image: \`${{ secrets.acr_login_server }}/${{ secrets.image_name }}:${{ inputs.environment_tag }}\`
+          - Immutable image tag: \`${{ steps.image.outputs.immutable_tag }}\`
+          - Source commit: \`${{ steps.image.outputs.sha }}\`
+          SUMMARY
