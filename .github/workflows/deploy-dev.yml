@@ -5,12 +5,8 @@ on:
     types:
       - closed
     branches:
-      - develop
+      - main
   workflow_dispatch:
-    inputs:
-      ref:
-        description: Branch or SHA to deploy
-        required: false
 
 permissions:
   contents: read
@@ -21,8 +17,6 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     uses: ./.github/workflows/_deploy-azure-app.yml
     with:
-      checkout_ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.ref || 'develop' }}
-      environment_tag: dev
       build_image: true
     secrets:
       acr_login_server: ${{ secrets.ACR_LOGIN_SERVER }}

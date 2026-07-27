@@ -140,6 +140,50 @@ image:
 uv lock
 ```
 
+## GitHub Actions Deployment
+
+The deployment workflows in `.github/workflows/` publish the Docker image to
+Azure Container Registry and restart the matching Azure App Service. The
+environment-specific workflows call `.github/workflows/_deploy-azure-app.yml`,
+which contains the shared deployment steps.
+
+Deployment flow:
+
+- `.github/workflows/deploy-dev.yml`: merging a pull request into `main` builds
+  the Docker image, tags it as `latest`, deploys it to dev, and replaces the
+  previous `latest` image tag.
+- `.github/workflows/deploy-demo.yml`: manually promotes the current `latest`
+  image to both `demo` and `promotion`.
+- `.github/workflows/deploy-stage.yml`: pushing a Git tag promotes `promotion`
+  to `stage`.
+- `.github/workflows/deploy-prod.yml`: publishing a GitHub release promotes
+  `promotion` to `prod`.
+
+This keeps the ACR tag set small: `latest`, `promotion`, `demo`, `stage`, and
+`prod`. The `promotion` tag is selected when demo is deployed, then used as the
+fixed source for stage and production deployments.
+
+Required repository secrets:
+
+- `AZURE_CLIENT_ID`
+- `AZURE_TENANT_ID`
+- `AZURE_SUBSCRIPTION_ID`
+- `AZURE_RESOURCE_GROUP`
+- `ACR_NAME`
+- `ACR_LOGIN_SERVER`
+- `IMAGE_NAME`
+- `AZURE_WEBAPP_NAME_DEV`
+- `AZURE_WEBAPP_NAME_DEMO`
+- `AZURE_WEBAPP_NAME_STAGE`
+- `AZURE_WEBAPP_NAME_PROD`
+
+Each Azure App Service should point at the matching image tag:
+
+- Dev: `latest`
+- Demo: `demo`
+- Stage: `stage`
+- Prod: `prod`
+
 ### SAML identity provider
 
 The Django app is configured as a generic SAML service provider. Projects built
