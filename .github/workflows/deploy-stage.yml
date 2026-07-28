@@ -15,7 +15,6 @@ jobs:
     uses: ./.github/workflows/_deploy-azure-app.yml
     with:
       target_tag: stage
-      build_image: false
     secrets:
       acr_login_server: ${{ secrets.ACR_LOGIN_SERVER }}
       acr_name: ${{ secrets.ACR_NAME }}

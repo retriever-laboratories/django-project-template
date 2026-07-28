@@ -8,10 +8,6 @@ on:
         required: false
         type: string
         default: latest
-      build_image:
-        description: Build the Docker image instead of promoting an existing image
-        required: true
-        type: boolean
     secrets:
       acr_login_server:
         required: true
@@ -41,7 +37,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        if: ${{ inputs.build_image == true }}
+        if: ${{ inputs.target_tag == 'latest' }}
         uses: actions/checkout@v4
         with:
           ref: main
@@ -61,7 +57,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push image
-        if: ${{ inputs.build_image == true }}
+        if: ${{ inputs.target_tag == 'latest' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -75,7 +71,7 @@ jobs:
             .
 
       - name: Promote existing image
-        if: ${{ inputs.build_image == false }}
+        if: ${{ inputs.target_tag != 'latest' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -84,7 +80,7 @@ jobs:
           target_tag="${{ inputs.target_tag }}"
 
           if [[ -z "$target_tag" ]]; then
-            echo "target_tag is required when build_image is false." >&2
+            echo "target_tag is required for promotion." >&2
             exit 1
           fi
 
@@ -113,12 +109,3 @@ jobs:
           az webapp restart \
             --resource-group "${{ secrets.azure_resource_group }}" \
             --name "${{ secrets.azure_webapp_name }}"
-
-      - name: Deployment summary
-        shell: bash
-        run: |
-          cat <<SUMMARY >> "$GITHUB_STEP_SUMMARY"
-          ## ${{ inputs.target_tag }} deployment
-
-          - Image: \`${{ secrets.acr_login_server }}/${{ secrets.image_name }}:${{ inputs.target_tag }}\`
-          SUMMARY

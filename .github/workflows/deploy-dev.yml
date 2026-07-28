@@ -16,8 +16,6 @@ jobs:
   deploy:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     uses: ./.github/workflows/_deploy-azure-app.yml
-    with:
-      build_image: true
     secrets:
       acr_login_server: ${{ secrets.ACR_LOGIN_SERVER }}
       acr_name: ${{ secrets.ACR_NAME }}
