@@ -47,3 +47,7 @@ body.htmx-request::before {
   opacity: 0.6;
   pointer-events: none;
 }
+
+ul.errorlist > li {
+  color: var(--color-error) !important;
+}
