@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "django_htmx",
     "django_htmx_base",
     # Internal
+    "oidc_auth",
     "core",
 ]
 
@@ -79,6 +80,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "oidc_auth.middleware.LoginRequiredMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # HTMX helper (adds request.htmx, etc.)
@@ -219,6 +221,41 @@ USE_TZ = True
 # Auth / Primary Key
 # ----------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = os.getenv("LOGIN_REDIRECT_URL", "/")
+LOGOUT_REDIRECT_URL = os.getenv("LOGOUT_REDIRECT_URL", "/")
+
+OIDC_PROVIDER_DOMAIN = os.getenv(
+    "OIDC_PROVIDER_DOMAIN",
+    "",
+).strip()
+OIDC_ISSUER = os.getenv(
+    "OIDC_ISSUER",
+    f"https://{OIDC_PROVIDER_DOMAIN}" if OIDC_PROVIDER_DOMAIN else "",
+).strip()
+OIDC_CLIENT_ID = os.getenv("OIDC_CLIENT_ID", "").strip()
+OIDC_CLIENT_SECRET = os.getenv(
+    "OIDC_CLIENT_SECRET",
+    "",
+).strip()
+OIDC_AUDIENCE = os.getenv("OIDC_AUDIENCE", "").strip()
+OIDC_SCOPES = os.getenv("OIDC_SCOPES", "openid profile email groups")
+OIDC_GROUPS_CLAIM = os.getenv("OIDC_GROUPS_CLAIM", "groups")
+OIDC_ADMIN_GROUPS = tuple(
+    group.strip()
+    for group in os.getenv("OIDC_ADMIN_GROUPS", "").split(",")
+    if group.strip()
+)
+
+LOGIN_EXEMPT_URLS = tuple(
+    path
+    for path in os.getenv(
+        "LOGIN_EXEMPT_URLS",
+        "/login/,/login/callback/,/logout/,/health/,/static/,/media/",
+    ).split(",")
+    if path
+)
 
 # ----------------------------
 # Pagination

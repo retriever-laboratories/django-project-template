@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.urls import include
 from django.urls import path
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
@@ -53,7 +54,10 @@ def db_ping(request):
 urlpatterns = [
     # Admin site
     path("admin/", admin.site.urls),
+    # Authentication
+    path("", include("oidc_auth.urls")),
     # Global endpoints
+    path("", home, name="home"),
     path("health/", health, name="health"),
     path("db-ping/", db_ping, name="db_ping"),
     path("ping/", ping, name="ping"),
