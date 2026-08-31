@@ -30,6 +30,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret-key")
 
 # DEBUG: default True for local POC, but override via env in CI/Prod
 DEBUG = os.getenv("DJANGO_DEBUG", "true").lower() in ("1", "true", "yes")
+LOCAL_DEVELOPMENT = os.getenv("LOCAL_DEVELOPMENT", "false").lower() in ("1", "true", "yes")
 
 # Comma-separated list: e.g. "localhost,127.0.0.1,myapp.example.com"
 ALLOWED_HOSTS = [
@@ -41,12 +42,9 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     o for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o
 ]
-USE_X_FORWARDED_HOST = True if os.getenv("LOCAL_DEVELOPMENT", None) else False
-SECURE_PROXY_SSL_HEADER = (
-    ("HTTP_X_FORWARDED_PROTO", "https")
-    if os.getenv("LOCAL_DEVELOPMENT", None)
-    else None
-)
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 
 # ----------------------------
 # Applications
@@ -97,6 +95,13 @@ if DEBUG:
         "127.0.0.1",
         # ...
     ]
+
+    def show_toolbar(request):
+        return LOCAL_DEVELOPMENT
+
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+    }
 
 if HAS_WHITENOISE:
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
@@ -196,7 +201,11 @@ STORAGES = {
     },
     "staticfiles": {
         "BACKEND": (
-            "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            # Use the non-manifest WhiteNoise backend locally
+            "whitenoise.storage.CompressedStaticFilesStorage"
+            if HAS_WHITENOISE and LOCAL_DEVELOPMENT
+            # Use the strict manifest backend for true production (gives unique hashes to filenames)
+            else "whitenoise.storage.CompressedManifestStaticFilesStorage"
             if HAS_WHITENOISE
             else "django.contrib.staticfiles.storage.StaticFilesStorage"
         ),
