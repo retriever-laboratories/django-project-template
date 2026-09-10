@@ -1,13 +1,16 @@
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth.decorators import login_not_required
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.urls import include
 from django.urls import path
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
 
+@login_not_required
 def health(_):
     return JsonResponse({"status": "ok"})
 
@@ -51,6 +54,8 @@ def db_ping(request):
 
 
 urlpatterns = [
+    path("", include("users.urls")),
+    path("", home, name="home"),
     # Admin site
     path("admin/", admin.site.urls),
     # Global endpoints

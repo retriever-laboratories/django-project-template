@@ -53,6 +53,7 @@ SECURE_PROXY_SSL_HEADER = (
 # ----------------------------
 INSTALLED_APPS = [
     # Django core
+    # For the custom admin login requirements, replace this with "users.apps.Admin".
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -64,6 +65,7 @@ INSTALLED_APPS = [
     "django_htmx_base",
     # Internal
     "core",
+    "users",
 ]
 
 
@@ -79,6 +81,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.auth.middleware.LoginRequiredMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # HTMX helper (adds request.htmx, etc.)
@@ -219,6 +222,20 @@ USE_TZ = True
 # Auth / Primary Key
 # ----------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = "users.User"
+LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+OIDC_PROVIDER_DOMAIN = os.getenv("OIDC_PROVIDER_DOMAIN", "").strip()
+OIDC_CLIENT_ID = os.getenv("OIDC_CLIENT_ID", "")
+OIDC_CLIENT_SECRET = os.getenv("OIDC_CLIENT_SECRET", "")
+OIDC_AUDIENCE = os.getenv("OIDC_AUDIENCE", "")
+OIDC_GROUPS_CLAIM = os.getenv("OIDC_GROUPS_CLAIM", "groups")
+OIDC_ADMIN_GROUPS = [
+    group.strip()
+    for group in os.getenv("OIDC_ADMIN_GROUPS", "").split(",")
+    if group.strip()
+]
 
 # ----------------------------
 # Pagination
