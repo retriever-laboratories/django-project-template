@@ -1,0 +1,6 @@
+{% if error %}
+  <p role="alert" class="text-error mb-3">{{ error }}</p>
+{% elif saved_path %}
+  <p role="status" class="text-success mb-3">Uploaded: {{ saved_path }}</p>
+{% endif %}
+{% include "storage_account/partials/download_form.html" %}

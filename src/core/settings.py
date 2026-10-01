@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "django_htmx_base",
     # Internal
     "core",
+    "storage_account",
 ]
 
 
@@ -206,6 +207,9 @@ STORAGES = {
 # Media (user uploads)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+AZURE_STORAGE_ACCOUNT_URL = os.getenv("AZURE_STORAGE_ACCOUNT_URL", "").strip()
+AZURE_STORAGE_CONTAINER = os.getenv("AZURE_STORAGE_CONTAINER", "").strip()
 
 # ----------------------------
 # Internationalization / Time

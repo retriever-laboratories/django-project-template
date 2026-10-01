@@ -1,0 +1,12 @@
+<form
+  method="get"
+  action="{% url 'storage_account:download' %}"
+  hx-boost="false"
+  class="flex flex-wrap items-center gap-3"
+>
+  <label for="storage-path">Blob path</label>
+  <input id="storage-path" type="text" name="path"
+         value="{{ saved_path|default:'' }}" placeholder="examples/report.pdf"
+         class="input input-bordered w-full max-w-md" required>
+  <button type="submit" class="btn btn-secondary">Download</button>
+</form>

@@ -1,0 +1,17 @@
+<form
+  method="post"
+  action="{% url 'storage_account:upload' %}"
+  enctype="multipart/form-data"
+  hx-post="{% url 'storage_account:upload' %}"
+  hx-encoding="multipart/form-data"
+  hx-target="#storage-result"
+  hx-swap="innerHTML"
+  hx-disabled-elt="find button"
+  class="flex flex-wrap items-center gap-3"
+>
+  {% csrf_token %}
+  <label for="storage-file">File</label>
+  <input id="storage-file" type="file" name="file"
+         class="file-input file-input-bordered" required>
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>

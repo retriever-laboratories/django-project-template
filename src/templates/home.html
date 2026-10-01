@@ -35,4 +35,11 @@
 
     </div>
   </div>
+  <section class="px-6 mt-8">
+    <h2 class="text-xl font-semibold mb-4">Storage test</h2>
+    {% include "storage_account/partials/upload_form.html" %}
+    <div id="storage-result" class="mt-4">
+      {% include "storage_account/partials/result.html" %}
+    </div>
+  </section>
 {% endblock %}

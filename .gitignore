@@ -64,3 +64,4 @@ uv.lock
 # Operating System files
 .DS_Store
 Thumbs.db
+**caddy-root.crt**

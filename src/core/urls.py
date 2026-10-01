@@ -4,6 +4,7 @@ from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import path
+from django.urls import include
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
@@ -51,6 +52,8 @@ def db_ping(request):
 
 
 urlpatterns = [
+    path("", home, name="home"),
+    path("storage/", include("storage_account.urls")),
     # Admin site
     path("admin/", admin.site.urls),
     # Global endpoints
