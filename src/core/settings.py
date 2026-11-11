@@ -14,6 +14,24 @@ import os
 from importlib.util import find_spec
 from pathlib import Path
 
+
+def env_bool(name, default=False):
+    value = os.getenv(name)
+
+    if value is None:
+        return default
+
+    value = value.strip().lower()
+
+    if value in ("true", "1", "yes", "on"):
+        return True
+
+    if value in ("false", "0", "no", "off"):
+        return False
+
+    raise ValueError(f"{name} must be a boolean, got {value!r}")
+
+
 # ----------------------------
 # Paths
 # ----------------------------
@@ -29,24 +47,42 @@ BASE_DIR = SRC_DIR.parent  # project-root
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret-key")
 
 # DEBUG: default True for local POC, but override via env in CI/Prod
-DEBUG = os.getenv("DJANGO_DEBUG", "true").lower() in ("1", "true", "yes")
+DEBUG = env_bool("DJANGO_DEBUG")
+LOCAL_DEVELOPMENT = env_bool("LOCAL_DEVELOPMENT")
 
 # Comma-separated list: e.g. "localhost,127.0.0.1,myapp.example.com"
 ALLOWED_HOSTS = [
     h for h in os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h
 ]
 
+SECURE_SSL_REDIRECT = env_bool(
+    "DJANGO_SECURE_SSL_REDIRECT",
+)
+SECURE_PROXY_SSL_HEADER = (
+    ("HTTP_X_FORWARDED_PROTO", "https") if SECURE_SSL_REDIRECT else None
+)
+SECURE_HSTS_SECONDS = int(
+    os.getenv(
+        "DJANGO_SECURE_HSTS_SECONDS",
+        "2592000" if not DEBUG else "0",
+    )
+)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool(
+    "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS",
+)
+SECURE_HSTS_PRELOAD = env_bool(
+    "DJANGO_SECURE_HSTS_PRELOAD",
+)
+USE_X_FORWARDED_HOST = True
+SESSION_COOKIE_SECURE = env_bool("DJANGO_SESSION_COOKIE_SECURE", True)
+
 # Optional: CSRF Trusted Origins (needed when serving behind a domain with HTTPS)
 # Comma-separated full origins: e.g. "https://myapp.example.com,https://staging.example.com"
 CSRF_TRUSTED_ORIGINS = [
     o for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o
 ]
-USE_X_FORWARDED_HOST = True if os.getenv("LOCAL_DEVELOPMENT", None) else False
-SECURE_PROXY_SSL_HEADER = (
-    ("HTTP_X_FORWARDED_PROTO", "https")
-    if os.getenv("LOCAL_DEVELOPMENT", None)
-    else None
-)
+CSRF_COOKIE_SECURE = env_bool("DJANGO_CSRF_COOKIE_SECURE", True)
+
 
 # ----------------------------
 # Applications
@@ -64,8 +100,9 @@ INSTALLED_APPS = [
     "django_htmx_base",
     # Internal
     "core",
+    # Django Forms for fallback rendering
+    "django.forms",
 ]
-
 
 # ----------------------------
 # Middleware
@@ -93,9 +130,7 @@ if DEBUG:
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
     INTERNAL_IPS = [
-        # ...
         "127.0.0.1",
-        # ...
     ]
 
 if HAS_WHITENOISE:
@@ -130,6 +165,7 @@ TEMPLATES = [
         },
     }
 ]
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # ----------------------------
 # Database
@@ -231,14 +267,6 @@ PAGINATE_BY = int(os.getenv("DJANGO_PAGINATE_BY", "10"))
 if not DEBUG:
     # Sensible defaults; adjust via env or split later into production settings
     SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "true").lower() in (
-        "1",
-        "true",
-        "yes",
-    )
-    SESSION_COOKIE_SECURE = os.getenv(
-        "DJANGO_SESSION_COOKIE_SECURE", "true"
-    ).lower() in ("1", "true", "yes")
-    CSRF_COOKIE_SECURE = os.getenv("DJANGO_CSRF_COOKIE_SECURE", "true").lower() in (
         "1",
         "true",
         "yes",
