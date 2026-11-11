@@ -47,3 +47,29 @@ body.htmx-request::before {
   opacity: 0.6;
   pointer-events: none;
 }
+
+/* ==========================================================================
+   DaisyUI Theme Variable Overrides CHL
+   ========================================================================== */
+:root {
+  --color-primary: #096EB5;
+  --color-primary-content: #ffffff;
+  --color-secondary: #465C82;
+  --color-secondary-content: #ffffff;
+  --color-accent: #95A739;
+  --color-accent-content: #ffffff;
+  --color-neutral: #dcdcdc;
+  --color-neutral-content: #8d8d8d;
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(98% 0 0);
+  --color-base-300: oklch(95% 0 0);
+  --color-base-content: #3b3b3b;
+  --color-info: #0F65A1;
+  --color-info-content: #F3FAFF;
+  --color-success: #819328;
+  --color-success-content: #F8FEF4;
+  --color-warning: #E8B200;
+  --color-warning-content: #714208;
+  --color-error: #DA3A16;
+  --color-error-content: #ffffff;
+}
