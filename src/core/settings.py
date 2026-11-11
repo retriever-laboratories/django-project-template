@@ -133,7 +133,7 @@ if DEBUG:
         "127.0.0.1",
     ]
 
-    def show_toolbar(request):
+    def show_toolbar(_):
         return LOCAL_DEVELOPMENT
 
     DEBUG_TOOLBAR_CONFIG = {
@@ -242,7 +242,8 @@ STORAGES = {
             # Use the non-manifest WhiteNoise backend locally
             "whitenoise.storage.CompressedStaticFilesStorage"
             if HAS_WHITENOISE and LOCAL_DEVELOPMENT
-            # Use the strict manifest backend for true production (gives unique hashes to filenames)
+            # Use the strict manifest backend for true production
+            # (gives unique hashes to filenames)
             else "whitenoise.storage.CompressedManifestStaticFilesStorage"
             if HAS_WHITENOISE
             else "django.contrib.staticfiles.storage.StaticFilesStorage"
