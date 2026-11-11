@@ -23,4 +23,4 @@ COPY src ./src
 
 WORKDIR /app/src
 
-CMD ["sh", "-c", "uv run gunicorn core.wsgi:application --bind 0.0.0.0:8000"]
+CMD ["sh", "-c", "uv run python manage.py migrate --no-input && uv run python manage.py collectstatic --noinput && uv run gunicorn core.wsgi:application --bind 0.0.0.0:8000"]

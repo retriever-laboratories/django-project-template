@@ -23,7 +23,8 @@ services:
     command: >
       sh -c "
         uv run python manage.py migrate &&
-        uv run python manage.py runserver 0.0.0.0:8000
+        ( [ $${DJANGO_DEBUG,,} = false ] || [ $${DJANGO_DEBUG} = 0 ] ) && uv run python manage.py collectstatic --noinput;
+        uv run python manage.py runserver 0.0.0.0:80
       "
   caddy:
     image: caddy:2

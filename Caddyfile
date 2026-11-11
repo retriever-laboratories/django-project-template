@@ -1,11 +1,8 @@
 localhost {
     tls internal 
     encode gzip zstd
-    handle_path /static/* {
-        root * /app/staticfiles
-        file_server
-    }
-    reverse_proxy web:8000 {
+
+    reverse_proxy web:80 {
         header_up X-Forwarded-Host {host}
         header_up X-Forwarded-Proto {scheme}
     }
