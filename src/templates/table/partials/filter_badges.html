@@ -1,5 +1,3 @@
-{% load static %}
-
 <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
   {% for key, values in request.GET.lists %}
     {% if key != "page" and key != "o" and key != "page_size" %}
@@ -10,7 +8,7 @@
             {{ value }}
             {% querystring request.GET values|list_remove:value|as_dict:key page=1 as remove_url %}
             <button type="button" hx-get="{{ remove_url }}" name="partials/table.html" hx-params="none" class="cursor-pointer" aria-label="Remove {{ value }}">
-              <img src="{% static 'icons/x-mark.svg' %}" class="size-3" alt="">
+              {% include 'svg/sm/x-mark.svg' %}
             </button>
           </span>
         {% endfor %}

@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block content %}
-  <div class="flex flex-col gap-4 p-4">
-    <h1 class="text-2xl font-bold">{{ model|verbose_name_plural|default:model_name|title }}</h1>
+  <div class="flex flex-col">
+    {% include "partials/title.html" with title=model|verbose_name_plural|default:model_name|title %}
     {% include "partials/table.html" %}
   </div>
 {% endblock %}

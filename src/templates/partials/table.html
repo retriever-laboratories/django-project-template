@@ -1,14 +1,14 @@
 <div
-  id="table-users"
-  class="flex flex-col gap-8"
-  hx-target="#table-users"
+  id="{{ wrapper_id|default:"main-table-wrapper" }}"
+  class="flex flex-col gap-[16px]"
+  hx-target="#{{ wrapper_id|default:"main-table-wrapper" }}"
   hx-swap="outerHTML"
   hx-push-url="true">
 
   {% include "table/partials/table_top.html" %}
 
   <div class="overflow-auto max-h-[385px]">
-    <table id="users" class="table table-sm w-full table-pin-rows">
+    <table id="{{ table_id|default:"main-table" }}" class="table table-sm w-full table-pin-rows">
       {% include "table/partials/table_header.html" %}
       <tbody>
         {% for object in object_list %}
