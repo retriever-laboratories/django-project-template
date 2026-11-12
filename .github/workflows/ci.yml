@@ -19,7 +19,7 @@ jobs:
 
     env:
       DJANGO_SECRET_KEY: ci-secret-key
-      DJANGO_DEBUG: "true"
+      DJANGO_DEBUG: "false"
       DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
 
     steps:
@@ -35,7 +35,8 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-
+          
+      # use `uv sync --locked` in productive environments
       - name: Install dependencies
         run: uv sync
 

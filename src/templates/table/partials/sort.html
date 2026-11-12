@@ -1,23 +1,21 @@
-{% load static %}
+{% partialdef sort_link %}
+  <a hx-boost="false" hx-get="{{ sort_url }}" class="flex items-center gap-1" aria-label="Sort by {{ column.field|title }}">
+    {{ column.field|title }}
+    {% include icon with arrow_dir=arrow_dir %}
+  </a>
+{% endpartialdef %}
 
 {% with asc_field=column.field desc_field="-"|add:column.field %}
-  {% if desc_field in request.get_full_path %}
-   {% querystring o=None as sort_url %}
-   {% static 'icons/arrow-up.svg' as sort_icon %}
-  {% elif asc_field in request.get_full_path %}
-   {% querystring o=desc_field as sort_url %}
-   {% static 'icons/arrow-down.svg' as sort_icon %}
-  {% else %}
-   {% querystring o=asc_field as sort_url %}
-   {% static 'icons/chevron-up-down.svg' as sort_icon %}
-  {% endif %}
-
-  <div class="dropdown dropdown-bottom dropdown-start">
-    <button type="button" class="flex cursor-pointer items-center gap-1" aria-expanded="false" data-dropdown-trigger>
-      {{ column.field|title }}
-     <a  hx-boost="false" hx-get="{{ sort_url }}" class="flex items-center gap-1" name="partials/table.html" aria-label="Sort by {{ column.field|title }}">
-          <img src="{{ sort_icon }}" class="size-4" alt="">
-        </a>
-    </button>
+  <div class="flex cursor-pointer items-center gap-1">
+    {% if request.GET.o == desc_field %}
+      {% querystring o=None as sort_url %}
+      {% with icon="svg/templates/arrow.html" arrow_dir="up" %}{% partial sort_link %}{% endwith %}
+    {% elif request.GET.o == asc_field %}
+      {% querystring o=desc_field as sort_url %}
+      {% with icon="svg/templates/arrow.html" arrow_dir="down" %}{% partial sort_link %}{% endwith %}
+    {% else %}
+      {% querystring o=asc_field as sort_url %}
+      {% with icon="svg/md/chevron-up-down.svg" %}{% partial sort_link %}{% endwith %}
+    {% endif %}
   </div>
 {% endwith %}

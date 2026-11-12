@@ -1,0 +1,16 @@
+<div class="collapse collapse-arrow">
+  <input type="checkbox" checked />
+  <div class="collapse-title bg-base-300 rounded-lg font-semibold mb-2 text-[18px]">
+    {% if collapse_tooltip_template %}
+      {% include collapse_tooltip_template %}
+    {% endif %}
+    {{ collapse_title }}
+  </div>
+  <div class="collapse-content px-1">
+    {% if collapse_body_template %}
+      {% include collapse_body_template %}
+    {% else %}
+      {{ collapse_body }} 
+    {% endif %}
+  </div>
+</div>
