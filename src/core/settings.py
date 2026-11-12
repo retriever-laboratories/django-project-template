@@ -100,8 +100,6 @@ INSTALLED_APPS = [
     "django_htmx_base",
     # Internal
     "core",
-    # Django Forms for fallback rendering
-    "django.forms",
 ]
 
 # ----------------------------
@@ -172,7 +170,6 @@ TEMPLATES = [
         },
     }
 ]
-FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # ----------------------------
 # Database
