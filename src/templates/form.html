@@ -1,22 +1,6 @@
 {% extends "base.html" %}
 
-    {% block title %}
-      {% if object %}
-        Edit {{ model_name|title }}
-      {% else %}
-        New {{ model_name|title }}
-      {% endif %}
-    {% endblock %}
-
 {% block content %}
-  <div class="flex w-full flex-col gap-4 p-4">
-    <h1 class="text-2xl font-bold">
-      {% if object %}
-        Edit {{ model_name|title }}
-      {% else %}
-        New {{ model_name|title }}
-      {% endif %}
-    </h1>
 
     <form
       method="post"
